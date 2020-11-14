@@ -1,3 +1,5 @@
+Distance decay functions for modelling cycling uptake
+================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -22,10 +24,10 @@ observation that the slope is negative beyond a certain threshold
 distance. A resergence of interest in the distance-frequency
 relationship has refined and, in some cases, sought to overturn
 pre-existing (and often context-specific) formulations, such as
-*p* = *α**e*<sup>*β**d*</sup> (A. Wilson 1971) and
-*p* = *α**d*<sup>*β*</sup> (Fotheringham 1981). Much *dd* research asks:
-what is the best function for linking the proportion (different types
-of) trip to distance?
+$p = \\\\alpha e^{\\\\beta d}$ (A. Wilson 1971) and
+$p = \\\\alpha d^{\\\\beta}$ (Fotheringham 1981). Much *dd* research
+asks: what is the best function for linking the proportion (different
+types of) trip to distance?
 
 Mathematically, what is *f* of *x*
 
@@ -42,19 +44,20 @@ distance decay changes with a range of additional factors such as type
 of bicycle and hillness of the route. how distance decay changes in
 response to a range of variables. The type of trip (e.g. time of day,
 purpose), characteristics of the people making the trip (e.g. age and
-sex) and the location and physical surroundings of the trip
-(e.g. hilliness, transport infrastructure) have all been found to affect
-the shape of distance decay curves (Fotheringham 1981; Fingleton 2005).
-Critically for understanding transport systems is the *mode*, or
-‘method’ of transport. Mode refers to the choice of ‘vehicle’
-(e.g. walking, cycling, car driving) and has been found, unsurprisingly,
-to dramatically affect the speed travelled during and amount of effort
-required for trips of different distances. The *dd* concept is
-especially applicable to active travel modes due to physiological limits
-on human mechanical power output and the slow speed of these modes. The
-next section shows that the concept has a long history in the academic
-literature but that interest in the term from the perspective of walking
-and cycling is relatively recent.
+sex) and the location and physical surroundings of the trip (e.g.
+hilliness, transport infrastructure) have all been found to affect the
+shape of distance decay curves \[@[Fotheringham1981;Fingleton
+(2005)](mailto:Fotheringham1981;@Fingleton2005)\]. Critically for
+understanding transport systems is the *mode*, or ‘method’ of transport.
+Mode refers to the choice of ‘vehicle’ (e.g. walking, cycling, car
+driving) and has been found, unsurprisingly, to dramatically affect the
+speed travelled during and amount of effort required for trips of
+different distances. The *dd* concept is especially applicable to active
+travel modes due to physiological limits on human mechanical power
+output and the slow speed of these modes. The next section shows that
+the concept has a long history in the academic literature but that
+interest in the term from the perspective of walking and cycling is
+relatively recent.
 
 # The distance decay literature
 
@@ -73,7 +76,7 @@ generalise early incarnations if *dd* (Zipf et al. 1946). This rule (it
 is sometimes referred to as the ‘gravity law’) suggests that travel
 incentives are roughly analogous to Newtonian gravitation (Ravenstein
 1885). The resulting formulae imply that the total movement between two
-places (*T*<sub>*i**j*</sub> between origin *i* and destination *j*) is
+places (*T*\_*i**j* between origin *i* and destination *j*) is
 proportional to the product of their populations (*m*<sub>*i*</sub> and
 *n*<sub>*j*</sub>), divided by a power of the distance between them:
 
@@ -102,7 +105,7 @@ distance as an explicit explanatory variable. Instead, the radiation
 model uses the number ‘intervening opportunities’ (*I**O*) as a proxy
 for *d**d* the denominator to estimate flow:
 
-*d**d* ≈ (*m*<sub>*i*</sub> + *s*<sub>*i**j*</sub>)(*m*<sub>*i*</sub> + *n*<sub>*j*</sub> + *s*<sub>*i**j*</sub>)
+$$ dd \\\\approx (m\_i+s\\\_{ij})(m\_i+n\_j+s\\\_{ij}) $$
 
 A recent study compared the parameter-free radiation model against the
 gravity model on a large intra-city (London) dataset on commuting. It
@@ -163,9 +166,9 @@ in the subsequent section.
 
 ## Recent distance decay literature
 
-As illustrated in Figure , *d**d* has grown rapidly as a term in the
-academic literature over the past 50 years, compared with the
-well-established “gravity model” terminology. By the 1970s, it seems
+As illustrated in Figure \\ref{fcitations}, *d**d* has grown rapidly as
+a term in the academic literature over the past 50 years, compared with
+the well-established “gravity model” terminology. By the 1970s, it seems
 that *d**d* overtook the “friction of distance” amongst transport
 researchers. Although Tobler’s ‘First Law’ of geography has gained rapid
 acceptance since its inception in the 1970s, it has a far lower (by a
@@ -181,7 +184,7 @@ interaction between places rather than the impact of distance)
 
 ![Number of citations per decade for different terms for ‘distance
 decay’ from Google
-Scholar.](README_files/figure-gfm/unnamed-chunk-6-1.png)
+Scholar.](README_files/figure-gfm/unnamed-chunk-7-1.png)
 
 Within the general understanding that trips become less frequent with
 distance (beyond some threshold limit) there are various ways of
@@ -189,43 +192,45 @@ describing the dependent variable that *dd* functions seek to explain.
 *dd* can be understood as:
 
 -   the absolute number of trips expected for any given distance band
-    (*d**b*): *f*(*d*) = *T*<sub>*d**b*</sub>
+    (*d**b*): *f*(*d*) = *T*\_*d**b*
 -   the proportion of *all* trips that are made for a given distance
-    band: *f*(*d*) = *T*<sub>*d**b*</sub>/*T*
+    band: *f*(*d*) = *T*\_*d**b*/*T*
 -   the proportion of trips *within a given distance band* made by a
-    particular trip type (e.g. walking):
-    *f*(*d*) = *T**w**a**l**k*<sub>*d**b*</sub>/*T*<sub>*d**b*</sub>
+    particular trip type (e.g. walking): \\newline
+    *f*(*d*) = *T**w**a**l**k*\_*d**b*/*T*\_*d**b*
 
 Of these definitions the second is the most generalisable, being a
-proportion (0 ≥ *p* ≤ 1) that tends to zero with increasing distance for
-any mode of transport. The third definition of *dd* also estimates a
-proportion with the same constraints, but is less generalisable: the
-result will not always tend to zero (the proportion of trips by air
-travel, for example, will tend to one for large trip distances). The
-first and simplest definition is the least generalisable as it is highly
-dependent on the total amount of travel.
+proportion ($0 \\\\geq p \\\\leq 1$) that tends to zero with increasing
+distance for any mode of transport. The third definition of *dd* also
+estimates a proportion with the same constraints, but is less
+generalisable: the result will not always tend to zero (the proportion
+of trips by air travel, for example, will tend to one for large trip
+distances). The first and simplest definition is the least generalisable
+as it is highly dependent on the total amount of travel.
 
 # Functional forms of distance decay
 
 Four functional forms commonly used in the literature to characterise
-distance decay curves were described in a recent paper (Martı́nez and
-Viegas 2013) as:
+distance decay curves were described in a recent paper (Mart’ınez and
+Viegas 2013) <!-- [@Martinez2013]  --> as:
 
--   Exponential functions, *e*<sup>*β**x*</sup> (A. Wilson 1971).
--   Power functions, *x*<sup>*β*</sup> (Fotheringham 1981).
--   Tanner functions,
-    *x*<sup>*β*<sub>1</sub></sup>*e*<sup>*β*<sub>2</sub>*x*</sup>
+-   Exponential functions, $e^{\\\\beta x}$ (A. Wilson 1971).
+-   Power functions, $x^{\\\\beta}$ (Fotheringham 1981).
+-   Tanner functions, $x^{\\\\beta\_1} e^{\\\\beta\_2 x}$
     (Openshaw 1977).
--   Box-Cox functions, $exp(\\beta \\frac{x^{\\gamma} - 1}{\\gamma})$
-    when the parameter *γ* ≠ 0 and *x*<sup>*β*</sup> when *γ* = 0
+-   Box-Cox functions,
+    $exp(\\\\beta \\\\frac{x^{\\\\gamma} - 1}{\\\\gamma})$ when the
+    parameter $\\\\gamma \\\\neq 0$ and $x^{\\\\beta}$ when
+    $\\\\gamma = 0$
 
-In addition to these, the authors advocated their own distance decay
-function, a modified version of the generalised logistic or ‘Richards’
-function:
+In addition to these, we have added the additional functions:
 
-$$
-f(x) = \\frac{1}{(1 + Qe^{-B(x - M)})^{1/v}}
-$$
+-   Modified beta distributions, which have been used to model distance
+    decay in ecological research (**nekola\_scale\_2014?**)
+-   A modified version of the generalised logistic or ‘Richards’
+    function
+
+$$ f(x) = \\frac{1}{(1 + Qe^{-B(x - M)})^{1/v}} $$
 
 Each of the 4 parameters in this model can be altered to ensure optimal
 fit and each has a separate meaning:
@@ -327,12 +332,11 @@ context of energy use, energy transportation and energy storage</span>.”
 
 </div>
 
-<div id="ref-Martinez2013" class="csl-entry">
+<div id="ref-martinez_new_2013" class="csl-entry">
 
-Martı́nez, L. Miguel, and José Manuel Viegas. 2013. “<span
-class="nocase">A new approach to modelling distance-decay functions for
-accessibility assessment in transport studies</span>.” *Journal of
-Transport Geography* 26: 87–96.
+Mart’ınez, L. Miguel, and Jos’e Manuel Viegas. 2013. “A New Approach to
+Modelling Distance-Decay Functions for Accessibility Assessment in
+Transport Studies.” *Journal of Transport Geography* 26: 87–96.
 <https://doi.org/10.1016/j.jtrangeo.2012.08.018>.
 
 </div>

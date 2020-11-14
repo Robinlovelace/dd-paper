@@ -1,10 +1,19 @@
 ---
 output: github_document
-bibliography:
-  - ddp.bib
+# output: bookdown::pdf_document2
+title: "Distance decay functions for modelling cycling uptake"
+bibliography: [ddp.bib, ddp2.bib]
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, eval=FALSE, echo=FALSE}
+citr::tidy_bib_file(rmd_file = "README.Rmd", messy_bibliography = "~/uaf/allrefs.bib", file = "ddp2.bib")
+```
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -20,33 +29,30 @@ library(tidyverse)
 
 # Introduction
 
-Trips of short distances tend to be more frequent than trips of long distances.
-This is a fundamental feature of transport behaviour, observed in the majority of
-transport systems worldwide. The concept is neatly captured by the term
-*distance decay* (*dd*), meaning simply that the proportion of trips of any given type tends to zero as distance tends to infinity. 
+Trips of short distances tend to be more frequent than trips of long
+distances. This is a fundamental feature of transport behaviour,
+observed in the majority of transport systems worldwide. The concept is
+neatly captured by the term *distance decay* (*dd*), meaning simply that
+the proportion of trips of any given type tends to zero as distance
+tends to infinity.
 
-
-*Distance decay* --- along with the synonymous *deterrence function* [@Simini2012]
---- builds on older terms expressing the same fundamental truth,
-such as the 'friction of distance' and the 'gravity model' (described in the
-subsequent section). 
-Work focussed explicitly on $dd$ explores *how* the proportion of trips
-($p$) declines with distance ($d$) [@Iacono2008],
-beyond the simple observation that the
-slope is negative beyond a certain threshold distance. 
-A resergence of interest in the distance-frequency relationship has
-refined and, in some cases, sought to overturn pre-existing
-(and often context-specific) formulations, such as
-$p = \alpha e^{\beta d}$ [@Wilson1971] and $p = \alpha d^{\beta}$
-[@Fotheringham1981].
-Much *dd* research asks: what is the best function 
-for linking the proportion (different types of) trip to distance?
+*Distance decay* --- along with the synonymous *deterrence function*
+[@Simini2012] --- builds on older terms expressing the same fundamental
+truth, such as the 'friction of distance' and the 'gravity model'
+(described in the subsequent section). Work focussed explicitly on $dd$
+explores *how* the proportion of trips ($p$) declines with distance
+($d$) [@Iacono2008], beyond the simple observation that the slope is
+negative beyond a certain threshold distance. A resergence of interest
+in the distance-frequency relationship has refined and, in some cases,
+sought to overturn pre-existing (and often context-specific)
+formulations, such as $p = \\alpha e^{\\beta d}$ [@Wilson1971] and $p =
+\\alpha d^{\\beta}$ [@Fotheringham1981]. Much *dd* research asks: what
+is the best function for linking the proportion (different types of)
+trip to distance?
 
 Mathematically, what is *f* of *x*
 
-$$
-p = f(x)
-$$
+$$ p = f(x) $$
 
 ```{r, echo=FALSE}
 # Look into changing this to a partial variable 
@@ -59,30 +65,31 @@ $$
 # all trips for a given trip distance and $e$ is stochastic error.
 ```
 
-where $x$ is distance and $p$ is the proportion of trips made in any distance band?
-Distance decay models can be empirically tested, and therefore ranked, by comparing observed travel behaviour with the levels expected based on different distance decay functions.
+where $x$ is distance and $p$ is the proportion of trips made in any
+distance band? Distance decay models can be empirically tested, and
+therefore ranked, by comparing observed travel behaviour with the levels
+expected based on different distance decay functions.
 
-Equation 1.1 can clearly be refined in many directions.
-Subscripts can be added to the terms
-and new variables can be added to illustrate how distance decay changes with
-a range of additional factors such as type of bicycle and hillness of the route.
-how distance decay changes in response to a range of variables.
-The type of trip (e.g. time of day, purpose),
-characteristics of the people making the trip
-(e.g. age and sex) and the location and physical surroundings of the
-trip (e.g. hilliness, transport infrastructure) have all been found to
-affect the shape of distance decay curves [@Fotheringham1981;@Fingleton2005].
-Critically for understanding transport systems is the *mode*, or 'method'
-of transport. Mode refers to the
-choice of 'vehicle' (e.g. walking, cycling, car driving) and has been found,
-unsurprisingly, to dramatically affect
-the speed travelled during and amount of effort required for trips of different
-distances. The *dd* concept is especially applicable to
-active travel modes due to physiological limits on human mechanical power
-output and the slow speed of these modes.
-The next section shows that the concept has a long history in the academic
-literature but that interest in the term from the perspective of walking and
-cycling is relatively recent.
+Equation 1.1 can clearly be refined in many directions. Subscripts can
+be added to the terms and new variables can be added to illustrate how
+distance decay changes with a range of additional factors such as type
+of bicycle and hillness of the route. how distance decay changes in
+response to a range of variables. The type of trip (e.g. time of day,
+purpose), characteristics of the people making the trip (e.g. age and
+sex) and the location and physical surroundings of the trip (e.g.
+hilliness, transport infrastructure) have all been found to affect the
+shape of distance decay curves
+[@[Fotheringham1981;@Fingleton2005](mailto:Fotheringham1981;@Fingleton2005)].
+Critically for understanding transport systems is the *mode*, or
+'method' of transport. Mode refers to the choice of 'vehicle' (e.g.
+walking, cycling, car driving) and has been found, unsurprisingly, to
+dramatically affect the speed travelled during and amount of effort
+required for trips of different distances. The *dd* concept is
+especially applicable to active travel modes due to physiological limits
+on human mechanical power output and the slow speed of these modes. The
+next section shows that the concept has a long history in the academic
+literature but that interest in the term from the perspective of walking
+and cycling is relatively recent.
 
 ```{r, echo=FALSE}
 # Todo: add some theoretical dd curves here
@@ -90,53 +97,51 @@ cycling is relatively recent.
 
 # The distance decay literature
 
-A variety of terms have been used to express
-the idea underlying the $dd$ concept outlined in this paper.
-These including the 'first law of geography', the 'friction of distance'
-and 'the gravity model'. It is worth reviewing these terms before describing
-work refering to $dd$ directly, to put the term in its wider historical
-context. The final part of this section reviews recent literature
-explicitly using the term 'distance decay' to explore the concept
+A variety of terms have been used to express the idea underlying the
+$dd$ concept outlined in this paper. These including the 'first law of
+geography', the 'friction of distance' and 'the gravity model'. It is
+worth reviewing these terms before describing work refering to $dd$
+directly, to put the term in its wider historical context. The final
+part of this section reviews recent literature explicitly using the term
+'distance decay' to explore the concept
 
 ## The gravity model
 
-The 'gravity model' of movement patterns
-helped to quantify and generalise early incarnations if *dd* [@zipf1946p1].
-This rule (it is sometimes referred to as the 'gravity law')
-suggests that travel incentives are roughly analogous to
-Newtonian gravitation [@Ravenstein1885]. The resulting formulae imply that
-the total movement between two places
-($T_{ij}$ between origin $i$ and destination $j$) is proportional
-to the product of their populations ($m_i$ and $n_j$),
+The 'gravity model' of movement patterns helped to quantify and
+generalise early incarnations if *dd* [@zipf1946p1]. This rule (it is
+sometimes referred to as the 'gravity law') suggests that travel
+incentives are roughly analogous to Newtonian gravitation
+[@Ravenstein1885]. The resulting formulae imply that the total movement
+between two places ($T\_{ij}$ between origin $i$ and destination $j$) is
+proportional to the product of their populations ($m_i$ and $n_j$),
 divided by a power of the distance between them:
 
 $$
 T_{ij} = \frac{m_i n_j}{d^\beta}
 $$
 
-as it has sometimes been called has been a rich source of theoretical and methodological advance in many fields, primarily
-urban modelling but also in fields as diverse as highway planning [@Jung2008],
-national transport of minerals [@Zuo2013]
-and spatial epidemiology [@Balcan2009].
+as it has sometimes been called has been a rich source of theoretical
+and methodological advance in many fields, primarily urban modelling but
+also in fields as diverse as highway planning [@Jung2008], national
+transport of minerals [@Zuo2013] and spatial epidemiology
+[@Balcan2009].
 
 ## The radiation model
 
-Despite dissenting voices --- including the statement that "a strict gravity
-model simply did not work" for modelling urban systems and that some subsequent
-refinements to the gravity model were "fudge factors" [@Wilson1998-past] ---
-the gravity model has been one of the dominant tools for understanding
-urban mobility over the past 100 years [@masucci2013gravity]. A recent
-development in this field has been the 'radiation model', which has been
-found to fit travel to work and other flow data well
-[@Simini2012]. This new formula for estimating flow rates between geographic
-zones is interesting in its ommission of distance as an explicit explanatory
-variable. Instead, the radiation model uses the
-number 'intervening opportunities' ($IO$)
-as a proxy for $dd$ the denominator to estimate flow:
+Despite dissenting voices --- including the statement that "a strict
+gravity model simply did not work" for modelling urban systems and that
+some subsequent refinements to the gravity model were "fudge factors"
+[@Wilson1998-past] --- the gravity model has been one of the dominant
+tools for understanding urban mobility over the past 100 years
+[@masucci2013gravity]. A recent development in this field has been the
+'radiation model', which has been found to fit travel to work and other
+flow data well [@Simini2012]. This new formula for estimating flow
+rates between geographic zones is interesting in its ommission of
+distance as an explicit explanatory variable. Instead, the radiation
+model uses the number 'intervening opportunities' ($IO$) as a proxy for
+$dd$ the denominator to estimate flow:
 
-$$
-dd \approx (m_i+s_{ij})(m_i+n_j+s_{ij})
-$$
+$$ dd \\approx (m_i+s\_{ij})(m_i+n_j+s\_{ij}) $$
 
 ```{r, echo=FALSE}
 # a concept that is familiar to conventional transportation planning practice as an
@@ -144,87 +149,82 @@ $$
 ```
 
 A recent study compared the parameter-free radiation model against the
-gravity model on a large intra-city (London) dataset on commuting. It was
-found that neither model produced a satisfactory fit with the data,
-leading to the conclusion that "commuting at the city scale still lacks a
-valid model and that further research is required to understand
-the mechanism behind urban mobility" [@masucci2013gravity].
-The 'first law of geography' and the related concept of the 'friction
-of distance' are alternative yet closely related (i.e. not mutually
-exclusive) terms for exploring $dd$ th
+gravity model on a large intra-city (London) dataset on commuting. It
+was found that neither model produced a satisfactory fit with the data,
+leading to the conclusion that "commuting at the city scale still lacks
+a valid model and that further research is required to understand the
+mechanism behind urban mobility" [@masucci2013gravity]. The 'first law
+of geography' and the related concept of the 'friction of distance' are
+alternative yet closely related (i.e. not mutually exclusive) terms for
+exploring $dd$ th
 
 ## The first law of geography
 
-Tobler's famous **first law of geography** states that
-"everything is related to everything
-else, but near things are more related than distant things" [@Tobler1970].
-The phrase implies that interaction between things declines
-with distance without specifying how or why. Clearly,
-the increased frequency of communications and transport between places that
-are close to each other can help explain spatial autocorrelation
- [@Miller2004]. However, unlike $dd$,
-the 'first law' says little about the way in which
-relatedness between entities declines with distace.
-Moreover, in a world of accelerating globalisation
-under the auspices of the ongoing 'digital revolution', the relevance of the
-'first law' to the system-level processes it was proposed to explain has come under scrutiny [@Westlund2013].
+Tobler's famous **first law of geography** states that "everything is
+related to everything else, but near things are more related than
+distant things" [@Tobler1970]. The phrase implies that interaction
+between things declines with distance without specifying how or why.
+Clearly, the increased frequency of communications and transport between
+places that are close to each other can help explain spatial
+autocorrelation [@Miller2004]. However, unlike $dd$, the 'first law'
+says little about the way in which relatedness between entities declines
+with distace. Moreover, in a world of accelerating globalisation under
+the auspices of the ongoing 'digital revolution', the relevance of the
+'first law' to the system-level processes it was proposed to explain has
+come under scrutiny [@Westlund2013].
 
 ```{r, echo=FALSE}
 # and related quantitative measures of Tobler's law
 ```
 
-To overcome this issue, the scope of this paper is limited to transportation
-of people and goods, opposed to immaterial communication.
-This simplifies the issue and makes it more tangible.
-Due to fundament physical limits on the efficiency with which matter
-can be moved [@MacKay13082013], and a limited supply of energy
-(especially pertinent in an era of resource over-extraction and
-climate change), such physical transport
-will always be limited to some degree by distance.
-This notion of travel frequency tending to zero as distance tends to
-infinity, present in the 'friction of distance' terminology, is also
-encapsulated by the more recent phrase 'distance decay' used in this paper.
+To overcome this issue, the scope of this paper is limited to
+transportation of people and goods, opposed to immaterial communication.
+This simplifies the issue and makes it more tangible. Due to fundament
+physical limits on the efficiency with which matter can be moved
+[@MacKay13082013], and a limited supply of energy (especially pertinent
+in an era of resource over-extraction and climate change), such physical
+transport will always be limited to some degree by distance. This notion
+of travel frequency tending to zero as distance tends to infinity,
+present in the 'friction of distance' terminology, is also encapsulated
+by the more recent phrase 'distance decay' used in this paper.
 
 ## The friction of distance
 
 The concept of the 'friction of distance' has been in use for over 100
 enjoying steady (albeit slowing) growth in use until the early 2000s
-(Fig. 1). The term helps to explain why Tobler's Law is true,
-implying that it is more *difficult* (e.g. in terms of energy use)
-for distant things to interact. 'Friction' is thus defined as
-"the difficulty of moving a volume (passengers or goods)" 
-[@Muvingi2012].
-The friction of distance is predominantly used as a synonym for $dd$,
-and to some extent the slowing use of the term illustrated in Fig. 1
-can be seen as a consequence of the latter simply replacing the former.
-One study, for example, refers to "the friction of distance
-parameter in gravity models" [@cliff1974evaluating]
-whereas others
-refer to 'distance decay' in spatial interaction and gravity models
-respectively: the terms are largely interchangeable [@Griffith1980;McCall2006].
-However, the question of precisely *how* the metaphorical friction 
-increases with distance has been tackled to a lesser extent in
-the (generally older) literature using the term. The recent $dd$ literature,
-by contrast, is largely focussed this question, as
-described in the subsequent section.
+(Fig. 1). The term helps to explain why Tobler's Law is true, implying
+that it is more *difficult* (e.g. in terms of energy use) for distant
+things to interact. 'Friction' is thus defined as "the difficulty of
+moving a volume (passengers or goods)" [@Muvingi2012]. The friction of
+distance is predominantly used as a synonym for $dd$, and to some extent
+the slowing use of the term illustrated in Fig. 1 can be seen as a
+consequence of the latter simply replacing the former. One study, for
+example, refers to "the friction of distance parameter in gravity
+models" [@cliff1974evaluating] whereas others refer to 'distance decay'
+in spatial interaction and gravity models respectively: the terms are
+largely interchangeable [@Griffith1980;McCall2006]. However, the
+question of precisely *how* the metaphorical friction increases with
+distance has been tackled to a lesser extent in the (generally older)
+literature using the term. The recent $dd$ literature, by contrast, is
+largely focussed this question, as described in the subsequent section.
 
 ## Recent distance decay literature
 
-As illustrated in Figure \ref{fcitations}, $dd$ has grown rapidly as a term in the academic
-literature over the past 50 years, compared with the well-established
-"gravity model" terminology. By the 1970s, it seems that 
-$dd$ overtook the "friction of distance" amongst transport researchers.
-Although Tobler's 'First Law' of geography has gained rapid acceptance
-since its inception in the 1970s, it has a far lower (by a factor
-of 5) rate of use than $dd$ in the transport literature. In other words,
-a quantitative review of the literature demonstrates that $dd$ is an
-up-and-coming term in transport studies. This section does not attempt
-a full overview of the 10,000+ articles using the $dd$
+As illustrated in Figure \\ref{fcitations}, $dd$ has grown rapidly as a
+term in the academic literature over the past 50 years, compared with
+the well-established "gravity model" terminology. By the 1970s, it seems
+that $dd$ overtook the "friction of distance" amongst transport
+researchers. Although Tobler's 'First Law' of geography has gained rapid
+acceptance since its inception in the 1970s, it has a far lower (by a
+factor of 5) rate of use than $dd$ in the transport literature. In other
+words, a quantitative review of the literature demonstrates that $dd$ is
+an up-and-coming term in transport studies. This section does not
+attempt a full overview of the 10,000+ articles using the $dd$
 terminology in the academic literature, instead focussing on a few key
 and highly cited works that helped set the agenda for $dd$ research.
 
-"friction of distance" terms. (which tends to assign importance to interaction
-between places rather than the impact of distance)
+"friction of distance" terms. (which tends to assign importance to
+interaction between places rather than the impact of distance)
 
 ```{r, echo=FALSE, fig.cap="Number of citations per decade for different terms for 'distance decay' from Google Scholar.", fig.lp="fcitations"}
 brt <-  theme(axis.text.x = element_text(angle=20, color = "black"),
@@ -241,68 +241,70 @@ ggplot(ddt) +
 # ggsave("paper/fcitations.pdf", scale = 1.5)
 ```
 
-\begin{figure}
-\centering\includegraphics[width=1\textwidth]{fcitations.pdf}
-\caption{Number of citations per decade for different terms for distance decay from Google Scholar.}\label{fcitations}
-\end{figure}
+Within the general understanding that trips become less frequent with
+distance (beyond some threshold limit) there are various ways of
+describing the dependent variable that *dd* functions seek to explain.
+*dd* can be understood as:
 
-Within the general understanding that trips become less
-frequent with distance (beyond some threshold limit) there are
-various ways of describing the dependent variable that *dd* functions seek to
-explain. *dd* can be understood as:
+-   the absolute number of trips expected for any given distance band
+    ($db$): $f(d) = T\_{db}$
+-   the proportion of *all* trips that are made for a given distance
+    band: $f(d) = T\_{db} / T$
+-   the proportion of trips *within a given distance band* made by a
+    particular trip type (e.g. walking): \\newline $f(d) = Twalk\_{db} /
+    T\_{db}$
 
-- the absolute
-number of trips expected for any given distance band ($db$):
-$f(d) = T_{db}$
-- the proportion of *all* trips that are made for a given distance band:
-$f(d) = T_{db} / T$
-- the proportion of trips *within a given distance band* made by a particular trip
-type (e.g. walking): \newline $f(d) = Twalk_{db} / T_{db}$
-
-Of these definitions the second is the most generalisable, being a proportion
-($0 \geq p \leq 1$)
-that tends to zero with increasing distance for any mode of transport.
-The third definition of *dd* also estimates a proportion with the same constraints,
-but is less generalisable: the result will not always tend to zero
-(the proportion of trips by air travel, for example, will tend to one for
-large trip distances). The first and simplest definition is the
-least generalisable as it is highly dependent on the total amount of travel.
+Of these definitions the second is the most generalisable, being a
+proportion ($0 \\geq p \\leq 1$) that tends to zero with increasing
+distance for any mode of transport. The third definition of *dd* also
+estimates a proportion with the same constraints, but is less
+generalisable: the result will not always tend to zero (the proportion
+of trips by air travel, for example, will tend to one for large trip
+distances). The first and simplest definition is the least generalisable
+as it is highly dependent on the total amount of travel.
 
 # Functional forms of distance decay
 
-Four functional forms commonly used in the
-literature to characterise distance decay curves were described in a recent paper [@Martinez2013] as:
+Four functional forms commonly used in the literature to characterise
+distance decay curves were described in a recent paper
+[@martinez_new_2013]
+<!-- [@Martinez2013]  -->
+as:
 
-- Exponential functions, $e^{\beta x}$  [@Wilson1971].
-- Power functions, $x^{\beta}$  [@Fotheringham1981].
-- Tanner functions, $x^{\beta_1} e^{\beta_2 x}$ [@Openshaw1977].
-- Box-Cox functions, $exp(\beta \frac{x^{\gamma} - 1}{\gamma})$ when
-  the parameter $\gamma \neq 0$ and $x^{\beta}$ when $\gamma = 0$ 
+-   Exponential functions, $e^{\\beta x}$ [@Wilson1971].
+-   Power functions, $x^{\\beta}$ [@Fotheringham1981].
+-   Tanner functions, $x^{\\beta_1} e^{\\beta_2 x}$ [@Openshaw1977].
+-   Box-Cox functions, $exp(\\beta \\frac{x^{\\gamma} - 1}{\\gamma})$
+    when the parameter $\\gamma \\neq 0$ and $x^{\\beta}$ when $\\gamma
+    = 0$
 
-In addition to these, the authors advocated their own distance decay function, a modified version of the generalised logistic or 'Richards' function:
+In addition to these, we have added the additional functions:
 
-$$
-f(x) = \frac{1}{(1 + Qe^{-B(x - M)})^{1/v}}
-$$
+- Modified beta distributions, which have been used to model distance decay in ecological research [@nekola_scale_2014]
+- A modified version of the generalised logistic or 'Richards' function
+
+$$ f(x) = \frac{1}{(1 + Qe^{-B(x - M)})^{1/v}} $$
 
 Each of the 4 parameters in this model can be altered to ensure optimal
 fit and each has a separate meaning:
 
-- $B$ is analogous to $\beta$ in the other functions
-- $Q$ represents the intercept
-- $v$ affects the skewness of the curve
-- $M$ is the *x* value of maximum growth
+-   $B$ is analogous to $\beta$ in the other functions
+-   $Q$ represents the intercept
+-   $v$ affects the skewness of the curve
+-   $M$ is the *x* value of maximum growth
 
 ## A linear model
 
-The simplest model to fit to the data is a linear model. For illustrative
-purposes we will fit a linear model to the data presented in Figure 1,
-with different intercepts and gradients for each of the groups (Figure 2):
+The simplest model to fit to the data is a linear model. For
+illustrative purposes we will fit a linear model to the data presented
+in Figure 1, with different intercepts and gradients for each of the
+groups (Figure 2):
 
 The intercepts and gradients for each group are presented in table !!!
 
 The above numbers are equations that describe the relationship between
-distance and *clc* for each group. In the `Mal_Young_NC` group, for example,
+distance and *clc* for each group. In the `Mal_Young_NC` group, for
+example,
 
 ```{r, echo=FALSE}
 # $$
