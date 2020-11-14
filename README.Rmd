@@ -1,35 +1,374 @@
 ---
 output: github_document
+bibliography:
+  - ddp.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
+library(tidyverse)
 ```
 
-# dd-paper
+# Abstract
 
-<!-- badges: start -->
-<!-- badges: end -->
+# Introduction
 
-The goal of dd-paper is to ...
+Trips of short distances tend to be more frequent than trips of long distances.
+This is a fundamental feature of transport behaviour, observed in the majority of
+transport systems worldwide. The concept is neatly captured by the term
+*distance decay* (*dd*), meaning simply that the proportion of trips of any given type tends to zero as distance tends to infinity. 
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
-```{r cars}
-summary(cars)
+*Distance decay* --- along with the synonymous *deterrence function* [@Simini2012]
+--- builds on older terms expressing the same fundamental truth,
+such as the 'friction of distance' and the 'gravity model' (described in the
+subsequent section). 
+Work focussed explicitly on $dd$ explores *how* the proportion of trips
+($p$) declines with distance ($d$) [@Iacono2008],
+beyond the simple observation that the
+slope is negative beyond a certain threshold distance. 
+A resergence of interest in the distance-frequency relationship has
+refined and, in some cases, sought to overturn pre-existing
+(and often context-specific) formulations, such as
+$p = \alpha e^{\beta d}$ [@Wilson1971] and $p = \alpha d^{\beta}$
+[@Fotheringham1981].
+Much *dd* research asks: what is the best function 
+for linking the proportion (different types of) trip to distance?
+
+Mathematically, what is *f* of *x*
+
+$$
+p = f(x)
+$$
+
+```{r, echo=FALSE}
+# Look into changing this to a partial variable 
+# Convert ds in xs
+# $$
+# \frac{\delta p}{\delta d} < 0 
+# $$
+# where $d$ is distance (km), $X$ is a set of explanatory variables, $tr$
+# is the trip rate, expressed either in absolute numbers or as a proportion of
+# all trips for a given trip distance and $e$ is stochastic error.
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/master/examples>.
+where $x$ is distance and $p$ is the proportion of trips made in any distance band?
+Distance decay models can be empirically tested, and therefore ranked, by comparing observed travel behaviour with the levels expected based on different distance decay functions.
 
-You can also embed plots, for example:
+Equation 1.1 can clearly be refined in many directions.
+Subscripts can be added to the terms
+and new variables can be added to illustrate how distance decay changes with
+a range of additional factors such as type of bicycle and hillness of the route.
+how distance decay changes in response to a range of variables.
+The type of trip (e.g. time of day, purpose),
+characteristics of the people making the trip
+(e.g. age and sex) and the location and physical surroundings of the
+trip (e.g. hilliness, transport infrastructure) have all been found to
+affect the shape of distance decay curves [@Fotheringham1981;@Fingleton2005].
+Critically for understanding transport systems is the *mode*, or 'method'
+of transport. Mode refers to the
+choice of 'vehicle' (e.g. walking, cycling, car driving) and has been found,
+unsurprisingly, to dramatically affect
+the speed travelled during and amount of effort required for trips of different
+distances. The *dd* concept is especially applicable to
+active travel modes due to physiological limits on human mechanical power
+output and the slow speed of these modes.
+The next section shows that the concept has a long history in the academic
+literature but that interest in the term from the perspective of walking and
+cycling is relatively recent.
 
-```{r pressure, echo = FALSE}
-# plot(pressure)
+```{r, echo=FALSE}
+# Todo: add some theoretical dd curves here
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub.
+# The distance decay literature
+
+A variety of terms have been used to express
+the idea underlying the $dd$ concept outlined in this paper.
+These including the 'first law of geography', the 'friction of distance'
+and 'the gravity model'. It is worth reviewing these terms before describing
+work refering to $dd$ directly, to put the term in its wider historical
+context. The final part of this section reviews recent literature
+explicitly using the term 'distance decay' to explore the concept
+
+## The gravity model
+
+The 'gravity model' of movement patterns
+helped to quantify and generalise early incarnations if *dd* [@zipf1946p1].
+This rule (it is sometimes referred to as the 'gravity law')
+suggests that travel incentives are roughly analogous to
+Newtonian gravitation [@Ravenstein1885]. The resulting formulae imply that
+the total movement between two places
+($T_{ij}$ between origin $i$ and destination $j$) is proportional
+to the product of their populations ($m_i$ and $n_j$),
+divided by a power of the distance between them:
+
+$$
+T_{ij} = \frac{m_i n_j}{d^\beta}
+$$
+
+as it has sometimes been called has been a rich source of theoretical and methodological advance in many fields, primarily
+urban modelling but also in fields as diverse as highway planning [@Jung2008],
+national transport of minerals [@Zuo2013]
+and spatial epidemiology [@Balcan2009].
+
+## The radiation model
+
+Despite dissenting voices --- including the statement that "a strict gravity
+model simply did not work" for modelling urban systems and that some subsequent
+refinements to the gravity model were "fudge factors" [@Wilson1998-past] ---
+the gravity model has been one of the dominant tools for understanding
+urban mobility over the past 100 years [@masucci2013gravity]. A recent
+development in this field has been the 'radiation model', which has been
+found to fit travel to work and other flow data well
+[@Simini2012]. This new formula for estimating flow rates between geographic
+zones is interesting in its ommission of distance as an explicit explanatory
+variable. Instead, the radiation model uses the
+number 'intervening opportunities' ($IO$)
+as a proxy for $dd$ the denominator to estimate flow:
+
+$$
+dd \approx (m_i+s_{ij})(m_i+n_j+s_{ij})
+$$
+
+```{r, echo=FALSE}
+# a concept that is familiar to conventional transportation planning practice as an
+# integral part of methods to model the distribution of trips 
+```
+
+A recent study compared the parameter-free radiation model against the
+gravity model on a large intra-city (London) dataset on commuting. It was
+found that neither model produced a satisfactory fit with the data,
+leading to the conclusion that "commuting at the city scale still lacks a
+valid model and that further research is required to understand
+the mechanism behind urban mobility" [@masucci2013gravity].
+The 'first law of geography' and the related concept of the 'friction
+of distance' are alternative yet closely related (i.e. not mutually
+exclusive) terms for exploring $dd$ th
+
+## The first law of geography
+
+Tobler's famous **first law of geography** states that
+"everything is related to everything
+else, but near things are more related than distant things" [@Tobler1970].
+The phrase implies that interaction between things declines
+with distance without specifying how or why. Clearly,
+the increased frequency of communications and transport between places that
+are close to each other can help explain spatial autocorrelation
+ [@Miller2004]. However, unlike $dd$,
+the 'first law' says little about the way in which
+relatedness between entities declines with distace.
+Moreover, in a world of accelerating globalisation
+under the auspices of the ongoing 'digital revolution', the relevance of the
+'first law' to the system-level processes it was proposed to explain has come under scrutiny [@Westlund2013].
+
+```{r, echo=FALSE}
+# and related quantitative measures of Tobler's law
+```
+
+To overcome this issue, the scope of this paper is limited to transportation
+of people and goods, opposed to immaterial communication.
+This simplifies the issue and makes it more tangible.
+Due to fundament physical limits on the efficiency with which matter
+can be moved [@MacKay13082013], and a limited supply of energy
+(especially pertinent in an era of resource over-extraction and
+climate change), such physical transport
+will always be limited to some degree by distance.
+This notion of travel frequency tending to zero as distance tends to
+infinity, present in the 'friction of distance' terminology, is also
+encapsulated by the more recent phrase 'distance decay' used in this paper.
+
+## The friction of distance
+
+The concept of the 'friction of distance' has been in use for over 100
+enjoying steady (albeit slowing) growth in use until the early 2000s
+(Fig. 1). The term helps to explain why Tobler's Law is true,
+implying that it is more *difficult* (e.g. in terms of energy use)
+for distant things to interact. 'Friction' is thus defined as
+"the difficulty of moving a volume (passengers or goods)" 
+[@Muvingi2012].
+The friction of distance is predominantly used as a synonym for $dd$,
+and to some extent the slowing use of the term illustrated in Fig. 1
+can be seen as a consequence of the latter simply replacing the former.
+One study, for example, refers to "the friction of distance
+parameter in gravity models" [@cliff1974evaluating]
+whereas others
+refer to 'distance decay' in spatial interaction and gravity models
+respectively: the terms are largely interchangeable [@Griffith1980;McCall2006].
+However, the question of precisely *how* the metaphorical friction 
+increases with distance has been tackled to a lesser extent in
+the (generally older) literature using the term. The recent $dd$ literature,
+by contrast, is largely focussed this question, as
+described in the subsequent section.
+
+## Recent distance decay literature
+
+As illustrated in Figure \ref{fcitations}, $dd$ has grown rapidly as a term in the academic
+literature over the past 50 years, compared with the well-established
+"gravity model" terminology. By the 1970s, it seems that 
+$dd$ overtook the "friction of distance" amongst transport researchers.
+Although Tobler's 'First Law' of geography has gained rapid acceptance
+since its inception in the 1970s, it has a far lower (by a factor
+of 5) rate of use than $dd$ in the transport literature. In other words,
+a quantitative review of the literature demonstrates that $dd$ is an
+up-and-coming term in transport studies. This section does not attempt
+a full overview of the 10,000+ articles using the $dd$
+terminology in the academic literature, instead focussing on a few key
+and highly cited works that helped set the agenda for $dd$ research.
+
+"friction of distance" terms. (which tends to assign importance to interaction
+between places rather than the impact of distance)
+
+```{r, echo=FALSE, fig.cap="Number of citations per decade for different terms for 'distance decay' from Google Scholar.", fig.lp="fcitations"}
+brt <-  theme(axis.text.x = element_text(angle=20, color = "black"),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major.y = element_line(color = "grey", linetype=3))
+ddt <- read.csv("https://github.com/npct/pct-team/raw/master/input-data/dd-terms-scholar.csv")
+ddt$Term <- gsub(pattern = "First law of geography", replacement = "First law", ddt$Term)
+ggplot(ddt) +
+  geom_line(aes(x = Decade, y = Frequency, color = Term, group = Term)) +
+  scale_y_log10() + brt +
+  ylab("Citations in Google Scholar")
+# +
+#   theme(legend.position = "top")
+# ggsave("paper/fcitations.pdf", scale = 1.5)
+```
+
+\begin{figure}
+\centering\includegraphics[width=1\textwidth]{fcitations.pdf}
+\caption{Number of citations per decade for different terms for distance decay from Google Scholar.}\label{fcitations}
+\end{figure}
+
+Within the general understanding that trips become less
+frequent with distance (beyond some threshold limit) there are
+various ways of describing the dependent variable that *dd* functions seek to
+explain. *dd* can be understood as:
+
+- the absolute
+number of trips expected for any given distance band ($db$):
+$f(d) = T_{db}$
+- the proportion of *all* trips that are made for a given distance band:
+$f(d) = T_{db} / T$
+- the proportion of trips *within a given distance band* made by a particular trip
+type (e.g. walking): \newline $f(d) = Twalk_{db} / T_{db}$
+
+Of these definitions the second is the most generalisable, being a proportion
+($0 \geq p \leq 1$)
+that tends to zero with increasing distance for any mode of transport.
+The third definition of *dd* also estimates a proportion with the same constraints,
+but is less generalisable: the result will not always tend to zero
+(the proportion of trips by air travel, for example, will tend to one for
+large trip distances). The first and simplest definition is the
+least generalisable as it is highly dependent on the total amount of travel.
+
+# Functional forms of distance decay
+
+Four functional forms commonly used in the
+literature to characterise distance decay curves were described in a recent paper [@Martinez2013] as:
+
+- Exponential functions, $e^{\beta x}$  [@Wilson1971].
+- Power functions, $x^{\beta}$  [@Fotheringham1981].
+- Tanner functions, $x^{\beta_1} e^{\beta_2 x}$ [@Openshaw1977].
+- Box-Cox functions, $exp(\beta \frac{x^{\gamma} - 1}{\gamma})$ when
+  the parameter $\gamma \neq 0$ and $x^{\beta}$ when $\gamma = 0$ 
+
+In addition to these, the authors advocated their own distance decay function, a modified version of the generalised logistic or 'Richards' function:
+
+$$
+f(x) = \frac{1}{(1 + Qe^{-B(x - M)})^{1/v}}
+$$
+
+Each of the 4 parameters in this model can be altered to ensure optimal
+fit and each has a separate meaning:
+
+- $B$ is analogous to $\beta$ in the other functions
+- $Q$ represents the intercept
+- $v$ affects the skewness of the curve
+- $M$ is the *x* value of maximum growth
+
+## A linear model
+
+The simplest model to fit to the data is a linear model. For illustrative
+purposes we will fit a linear model to the data presented in Figure 1,
+with different intercepts and gradients for each of the groups (Figure 2):
+
+The intercepts and gradients for each group are presented in table !!!
+
+The above numbers are equations that describe the relationship between
+distance and *clc* for each group. In the `Mal_Young_NC` group, for example,
+
+```{r, echo=FALSE}
+# $$
+# clc ~ (0.0941 - 0.0682) + (-0.00377 + 0.00301)  * dist
+# $$
+# 
+# Let's double-check this makes sense: 
+# 
+# ```{r, fig.cap="Demonstration of the meaning of the parameters produced by the 'summary()' function for the linear model (m1) for the group 'Mal_Young_NC'.", fig.height=3, fig.width=4, echo=FALSE}
+# mync <- filter(ntss, segment == "Mal_Young_NC")
+# mync$m1 <- (0.0941 - 0.0682) + (-0.00377 + 0.00301)  * mync$dist
+# plot(mync$dist, mync$clc)
+# lines(mync$dist, mync$m1)
+# ```
+# 
+# 
+# Considering the linear model is so simple, an adjusted R squared value of
+# 0.58 is not bad! 
+# 
+# Now we will progress to fit slightly more complicated polynomial models.
+# 
+# ## Cubic polynomial models
+# 
+# The results of the cubic models are displayed in Figure 4.
+# 
+# ```{r, echo=FALSE, fig.cap="Different versions of the cubic polynomial distance decay function fitted to the data with per-covariate parameters estimated for linear, square, cubic and all power terms (red, green, blue and yellow lines respectively)."}
+# m2 <- lm(clc ~ dist * segment + I(dist^2) + I(dist^3), data = ntss) 
+# m3 <- lm(clc ~ dist + I(dist^2) * segment + I(dist^3), data = ntss) 
+# m4 <- lm(clc ~ dist + I(dist^2) + I(dist^3) * segment, data = ntss) 
+# m5 <- lm(clc ~ dist * segment + I(dist^2) * segment + I(dist^3) * 
+#     segment, data = ntss) 
+# p1 + geom_line(aes(y = m2$fitted.values), color = "red") +
+#   geom_line(aes(y = m3$fitted.values), color = "green") +
+#   geom_line(aes(y = m4$fitted.values), color = "blue") +
+#   geom_line(aes(y = m5$fitted.values), color = "yellow", size = 3, alpha = 0.5)
+# ```
+# 
+# Note that there are different ways to fit parameters to the model: we can change
+# one parameter value for every group, or we can change many. In the finat model
+# presented in yellow if Figure 4, we changed all four
+# parameters in response to every
+# group. Thus we have calculated 32 parameter values! This is not a problem: we
+# can extract each formula from the coefficients. Lets extract them for the
+# `Fem_Old_NC` group, for example:
+# 
+# ```{r, echo=FALSE}
+# c5 <- coefficients(m5)
+# c5[grep("Fem_Old_NC", names(c5))]
+# ```
+# 
+# ```{r, echo=FALSE, eval=FALSE}
+# # Which model fits best
+# summary(m1)
+# summary(m2)
+# summary(m3)
+# summary(m4)
+# summary(m5)
+# ```
+# 
+# Of the cubic models fitted, the one with 32 parameters (8 for each parameter in
+# the general model) fits by far the best with the data, with an adjusted R-squared
+# value of 0.89.
+# 
+# From the preceeding analysis, it is clear that a 4 parameter polynomial model
+# fits sufficiently well for modelling: after all, we are interested in a simple
+# way to increase the update of cycling not *fit curves to the current rate of cycling*.
+```
+
+# References
