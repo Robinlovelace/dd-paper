@@ -1,17 +1,15 @@
 ---
-output: github_document
-# output: bookdown::pdf_document2
-title: "Distance decay functions for modelling cycling uptake"
+# output: github_document
+output: bookdown::pdf_document2
+title: "Distance decay functions for modelling active travel uptake"
 bibliography: [ddp.bib, ddp2.bib]
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, eval=FALSE, echo=FALSE}
 citr::tidy_bib_file(rmd_file = "README.Rmd", messy_bibliography = "~/uaf/allrefs.bib", file = "ddp2.bib")
+browseURL("README.pdf")
 ```
 
 
@@ -20,7 +18,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  echo = FALSE
 )
 library(tidyverse)
 ```
@@ -35,6 +34,16 @@ observed in the majority of transport systems worldwide. The concept is
 neatly captured by the term *distance decay* (*dd*), meaning simply that
 the proportion of trips of any given type tends to zero as distance
 tends to infinity.
+Distance is an especially important variable for walking and cycling trips due to their low speeds compared with many motorised modes (outside rush hour congestion at least), meaning that that the concept of distance decay is especially important for active modes.
+However, notwithstanding a few notable exceptions, the concept has not been explored in depth from walking and cycling perspectives [@Iacono2008;@millward_activetransport_2013;@rybarczyk_spatial_2018].
+
+This paper aims to fill a gap in the literature by providing an overview of distance decay functions that have been used in the literature --- and some that have not --- from the perspective of potential applications to active travel research.
+It is structured as follows.
+...
+Section \@ref(funs) contains the bulk of the analysis, demonstrating a methods for implementing a range of distance decay functions.
+A summary of results is presented in Section \@ref(results), which are discussed in Section \@ref(discussion-and-conclusion).
+
+# Defining distance decay
 
 *Distance decay* --- along with the synonymous *deterrence function*
 [@Simini2012] --- builds on older terms expressing the same fundamental
@@ -45,8 +54,8 @@ explores *how* the proportion of trips ($p$) declines with distance
 negative beyond a certain threshold distance. A resergence of interest
 in the distance-frequency relationship has refined and, in some cases,
 sought to overturn pre-existing (and often context-specific)
-formulations, such as $p = \\alpha e^{\\beta d}$ [@Wilson1971] and $p =
-\\alpha d^{\\beta}$ [@Fotheringham1981]. Much *dd* research asks: what
+formulations, such as $p = \alpha e^{\beta d}$ [@Wilson1971] and $p =
+\alpha d^{\beta}$ [@Fotheringham1981]. Much *dd* research asks: what
 is the best function for linking the proportion (different types of)
 trip to distance?
 
@@ -79,7 +88,7 @@ purpose), characteristics of the people making the trip (e.g. age and
 sex) and the location and physical surroundings of the trip (e.g.
 hilliness, transport infrastructure) have all been found to affect the
 shape of distance decay curves
-[@[Fotheringham1981;@Fingleton2005](mailto:Fotheringham1981;@Fingleton2005)].
+[@Fotheringham1981;@Fingleton2005].
 Critically for understanding transport systems is the *mode*, or
 'method' of transport. Mode refers to the choice of 'vehicle' (e.g.
 walking, cycling, car driving) and has been found, unsurprisingly, to
@@ -112,7 +121,7 @@ generalise early incarnations if *dd* [@zipf1946p1]. This rule (it is
 sometimes referred to as the 'gravity law') suggests that travel
 incentives are roughly analogous to Newtonian gravitation
 [@Ravenstein1885]. The resulting formulae imply that the total movement
-between two places ($T\_{ij}$ between origin $i$ and destination $j$) is
+between two places ($T_{ij}$ between origin $i$ and destination $j$) is
 proportional to the product of their populations ($m_i$ and $n_j$),
 divided by a power of the distance between them:
 
@@ -136,27 +145,27 @@ tools for understanding urban mobility over the past 100 years
 [@masucci2013gravity]. A recent development in this field has been the
 'radiation model', which has been found to fit travel to work and other
 flow data well [@Simini2012]. This new formula for estimating flow
-rates between geographic zones is interesting in its ommission of
+rates between geographic zones is interesting in its omission of
 distance as an explicit explanatory variable. Instead, the radiation
 model uses the number 'intervening opportunities' ($IO$) as a proxy for
 $dd$ the denominator to estimate flow:
 
-$$ dd \\approx (m_i+s\_{ij})(m_i+n_j+s\_{ij}) $$
+$$ dd \approx \frac{m_in_i}{(m_i+s_{ij})(m_i+n_j+s_{ij})} $$
 
-```{r, echo=FALSE}
-# a concept that is familiar to conventional transportation planning practice as an
-# integral part of methods to model the distribution of trips 
-```
+where $m$ and $n$ are origin and destination zones whose population (or other measure of 'size') is iterated through for each origin $i$ and each destination $j$, and where $s_{ij}$ represents the total population (excluding the origin and destination zones) within a radius $r_{ij}$ equal to the distance between zones $i$ and $j$. 
 
+An advantage of the approach is its 'parameter free' nature; a disadvantage is the additional computation needed to calculate $s_{ij}$.
+Unlike other distance decay approaches, the distance alone is insufficient to estimate the amount of travel.
 A recent study compared the parameter-free radiation model against the
 gravity model on a large intra-city (London) dataset on commuting. It
-was found that neither model produced a satisfactory fit with the data,
+neither model produced a satisfactory fit with the data,
 leading to the conclusion that "commuting at the city scale still lacks
 a valid model and that further research is required to understand the
-mechanism behind urban mobility" [@masucci2013gravity]. The 'first law
+mechanism behind urban mobility" [@masucci2013gravity].
+The 'first law
 of geography' and the related concept of the 'friction of distance' are
 alternative yet closely related (i.e. not mutually exclusive) terms for
-exploring $dd$ th
+exploring $dd$.
 
 ## The first law of geography
 
@@ -210,7 +219,7 @@ largely focussed this question, as described in the subsequent section.
 
 ## Recent distance decay literature
 
-As illustrated in Figure \\ref{fcitations}, $dd$ has grown rapidly as a
+As illustrated in Figure \ref{fcitations}, $dd$ has grown rapidly as a
 term in the academic literature over the past 50 years, compared with
 the well-established "gravity model" terminology. By the 1970s, it seems
 that $dd$ overtook the "friction of distance" amongst transport
@@ -247,15 +256,15 @@ describing the dependent variable that *dd* functions seek to explain.
 *dd* can be understood as:
 
 -   the absolute number of trips expected for any given distance band
-    ($db$): $f(d) = T\_{db}$
+    ($db$): $f(d) = T_{db}$
 -   the proportion of *all* trips that are made for a given distance
-    band: $f(d) = T\_{db} / T$
+    band: $f(d) = T_{db} / T$
 -   the proportion of trips *within a given distance band* made by a
-    particular trip type (e.g. walking): \\newline $f(d) = Twalk\_{db} /
-    T\_{db}$
+    particular trip type (e.g. walking): \newline $f(d) = Twalk_{db} /
+    T_{db}$
 
 Of these definitions the second is the most generalisable, being a
-proportion ($0 \\geq p \\leq 1$) that tends to zero with increasing
+proportion ($0 \geq p \leq 1$) that tends to zero with increasing
 distance for any mode of transport. The third definition of *dd* also
 estimates a proportion with the same constraints, but is less
 generalisable: the result will not always tend to zero (the proportion
@@ -263,7 +272,7 @@ of trips by air travel, for example, will tend to one for large trip
 distances). The first and simplest definition is the least generalisable
 as it is highly dependent on the total amount of travel.
 
-# Functional forms of distance decay
+# Distance decay functions {#funs}
 
 Four functional forms commonly used in the literature to characterise
 distance decay curves were described in a recent paper
@@ -271,11 +280,11 @@ distance decay curves were described in a recent paper
 <!-- [@Martinez2013]  -->
 as:
 
--   Exponential functions, $e^{\\beta x}$ [@Wilson1971].
--   Power functions, $x^{\\beta}$ [@Fotheringham1981].
--   Tanner functions, $x^{\\beta_1} e^{\\beta_2 x}$ [@Openshaw1977].
--   Box-Cox functions, $exp(\\beta \\frac{x^{\\gamma} - 1}{\\gamma})$
-    when the parameter $\\gamma \\neq 0$ and $x^{\\beta}$ when $\\gamma
+-   Exponential functions, $e^{\beta x}$ [@Wilson1971].
+-   Power functions, $x^{\beta}$ [@Fotheringham1981].
+-   Tanner functions, $x^{\beta_1} e^{\beta_2 x}$ [@Openshaw1977].
+-   Box-Cox functions, $exp(\beta \frac{x^{\gamma} - 1}{\gamma})$
+    when the parameter $\gamma \neq 0$ and $x^{\beta}$ when $\gamma
     = 0$
 
 In addition to these, we have added the additional functions:
@@ -293,18 +302,73 @@ fit and each has a separate meaning:
 -   $v$ affects the skewness of the curve
 -   $M$ is the *x* value of maximum growth
 
-## A linear model
+Each of these distance decay functions was implemented on data representing commuting patterns by walking and cycling in three major UK cities with moderate, low and very low levels of walking and cycling mode share compared with international best practice: Cambridge, Leeds, and the rural local authority of Hereford.
+These cities were selected because they are of similar size but have widely different levels of walking and cycling, as shown in Figure \@ref(fig:pwalkcycle).
+The aim is to test the distance decay functions in diverse contexts.
+Data on travel behaviour and route distances was taken from the Propensity to Cycle Tool, which provides open data on cycling and other modes across England from the 2011 Census [@lovelace_2017_propensity].
+
+```{r, echo=FALSE, eval=FALSE}
+l = pct::get_pct(geography = "msoa", layer = "l", national = TRUE)
+sf::st_crs(l) = 4326
+rgx = "Hereford|Leeds|Cambridge$"
+l_cities = l %>% 
+  filter(str_detect(lad_name1, rgx) & str_detect(lad_name2, rgx))
+regions = c("cambridgeshire", "avon", "west-yorkshire")
+# regions = c("cambridgeshire", "humberside", "west-yorkshire")
+l = purrr::map_dfr(regions, ~pct::get_pct_lines(., geography = "msoa"), .id = "id")
+names(l)
+nrow(l_cities) / nrow(l) # 1.6%, 7000 OD pairs
+summary(l_cities$all)
+# l_cities = l_cities %>% filter(all >= 20) %>% 
+l_cities = l %>% filter(all >= 50) %>% 
+  select(city = id, all:taxi_other, distance_euclidean = e_dist_km, distance = rf_dist_km, gradient = rf_avslope_perc, dutch_slc) %>% 
+  mutate(pcycle = bicycle / all, pwalk = foot / all)
+unique(l_cities$city)
+region_names_title = c("Cambridgeshire", "Avon", "West Yorkshire")
+l_cities$city = as.factor(l_cities$city)
+levels(l_cities$city) = region_names_title
+unique(l_cities$city)
+mapview::mapview(l_cities["pwalk"])
+saveRDS(l_cities, "l_cities.Rds")
+```
+
+```{r pwalkcycle, fig.cap="The proportion of people who walk (above) and cycle (below) to work in major (50+ commuters) origin-destination pairs in three English regions: Cambridge (left), Avon (centre) and West Yorkshire (right)."}
+l_cities = readRDS("l_cities.Rds")
+g1 = ggplot(l_cities) +
+  geom_point(aes(distance, pwalk, size = all), alpha = 0.1) +
+  facet_wrap(~city) +
+  ylim(c(0, 0.81))
+g2 = ggplot(l_cities) +
+  geom_point(aes(distance, pcycle, size = all), alpha = 0.1) +
+  facet_wrap(~city) +
+  ylim(c(0, 0.81))
+library(patchwork)
+g1 / g2
+```
+
+## Linear models
 
 The simplest model to fit to the data is a linear model. For
 illustrative purposes we will fit a linear model to the data presented
 in Figure 1, with different intercepts and gradients for each of the
-groups (Figure 2):
+groups (Figure 2).
+
 
 The intercepts and gradients for each group are presented in table !!!
 
 The above numbers are equations that describe the relationship between
 distance and *clc* for each group. In the `Mal_Young_NC` group, for
-example,
+example.
+
+## Exponential functions
+
+
+
+
+# Results
+
+
+# Discussion and conclusion
 
 ```{r, echo=FALSE}
 # $$
