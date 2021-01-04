@@ -1,18 +1,36 @@
-Distance decay functions for modelling cycling uptake
+Distance decay functions for modelling active travel uptake
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Abstract
+# 1 Abstract
 
-# Introduction
+# 2 Introduction
 
 Trips of short distances tend to be more frequent than trips of long
 distances. This is a fundamental feature of transport behaviour,
 observed in the majority of transport systems worldwide. The concept is
 neatly captured by the term *distance decay* (*dd*), meaning simply that
 the proportion of trips of any given type tends to zero as distance
-tends to infinity.
+tends to infinity. Distance is an especially important variable for
+walking and cycling trips due to their low speeds compared with many
+motorised modes (outside rush hour congestion at least), meaning that
+that the concept of distance decay is especially important for active
+modes. However, notwithstanding a few notable exceptions, the concept
+has not been explored in depth from walking and cycling perspectives
+(Iacono, Krizek, and El-Geneidy 2008; Millward, Spinney, and Scott 2013;
+Rybarczyk 2018).
+
+This paper aims to fill a gap in the literature by providing an overview
+of distance decay functions that have been used in the literature — and
+some that have not — from the perspective of potential applications to
+active travel research. It is structured as follows. … Section
+<a href="#funs">5</a> contains the bulk of the analysis, demonstrating a
+methods for implementing a range of distance decay functions. A summary
+of results is presented in Section <a href="#results">6</a>, which are
+discussed in Section <a href="#discussion-and-conclusion">7</a>.
+
+# 3 Defining distance decay
 
 *Distance decay* — along with the synonymous *deterrence function*
 (Simini et al. 2012) — builds on older terms expressing the same
@@ -58,7 +76,7 @@ next section shows that the concept has a long history in the academic
 literature but that interest in the term from the perspective of walking
 and cycling is relatively recent.
 
-# The distance decay literature
+# 4 The distance decay literature
 
 A variety of terms have been used to express the idea underlying the
 *d**d* concept outlined in this paper. These including the ‘first law of
@@ -68,7 +86,7 @@ directly, to put the term in its wider historical context. The final
 part of this section reviews recent literature explicitly using the term
 ‘distance decay’ to explore the concept
 
-## The gravity model
+## 4.1 The gravity model
 
 The ‘gravity model’ of movement patterns helped to quantify and
 generalise early incarnations if *dd* (Zipf et al. 1946). This rule (it
@@ -89,7 +107,7 @@ also in fields as diverse as highway planning (Jung, Wang, and Stanley
 2008), national transport of minerals (Zuo et al. 2013) and spatial
 epidemiology (Balcan et al. 2009).
 
-## The radiation model
+## 4.2 The radiation model
 
 Despite dissenting voices — including the statement that “a strict
 gravity model simply did not work” for modelling urban systems and that
@@ -99,24 +117,35 @@ dominant tools for understanding urban mobility over the past 100 years
 (Masucci et al. 2013). A recent development in this field has been the
 ‘radiation model,’ which has been found to fit travel to work and other
 flow data well (Simini et al. 2012). This new formula for estimating
-flow rates between geographic zones is interesting in its ommission of
+flow rates between geographic zones is interesting in its omission of
 distance as an explicit explanatory variable. Instead, the radiation
 model uses the number ‘intervening opportunities’ (*I**O*) as a proxy
 for *d**d* the denominator to estimate flow:
 
-*d**d* ≈ (*m*<sub>*i*</sub> + *s*\_*i**j*)(*m*<sub>*i*</sub> + *n*<sub>*j*</sub> + *s*\_*i**j*)
+$$ dd \\approx \\frac{m\_in\_i}{(m\_i+s\_{ij})(m\_i+n\_j+s\_{ij})} $$
 
-A recent study compared the parameter-free radiation model against the
+where *m* and *n* are origin and destination zones whose population (or
+other measure of ‘size’) is iterated through for each origin *i* and
+each destination *j*, and where *s*<sub>*i**j*</sub> represents the
+total population (excluding the origin and destination zones) within a
+radius *r*<sub>*i**j*</sub> equal to the distance between zones *i* and
+*j*.
+
+An advantage of the approach is its ‘parameter free’ nature; a
+disadvantage is the additional computation needed to calculate
+*s*<sub>*i**j*</sub>. Unlike other distance decay approaches, the
+distance alone is insufficient to estimate the amount of travel. A
+recent study compared the parameter-free radiation model against the
 gravity model on a large intra-city (London) dataset on commuting. It
-was found that neither model produced a satisfactory fit with the data,
-leading to the conclusion that “commuting at the city scale still lacks
-a valid model and that further research is required to understand the
-mechanism behind urban mobility” (Masucci et al. 2013). The ‘first law
-of geography’ and the related concept of the ‘friction of distance’ are
-alternative yet closely related (i.e. not mutually exclusive) terms for
-exploring *d**d* th
+neither model produced a satisfactory fit with the data, leading to the
+conclusion that “commuting at the city scale still lacks a valid model
+and that further research is required to understand the mechanism behind
+urban mobility” (Masucci et al. 2013). The ‘first law of geography’ and
+the related concept of the ‘friction of distance’ are alternative yet
+closely related (i.e. not mutually exclusive) terms for exploring
+*d**d*.
 
-## The first law of geography
+## 4.3 The first law of geography
 
 Tobler’s famous **first law of geography** states that “everything is
 related to everything else, but near things are more related than
@@ -142,7 +171,7 @@ frequency tending to zero as distance tends to infinity, present in the
 ‘friction of distance’ terminology, is also encapsulated by the more
 recent phrase ‘distance decay’ used in this paper.
 
-## The friction of distance
+## 4.4 The friction of distance
 
 The concept of the ‘friction of distance’ has been in use for over 100
 enjoying steady (albeit slowing) growth in use until the early 2000s
@@ -156,14 +185,14 @@ a consequence of the latter simply replacing the former. One study, for
 example, refers to “the friction of distance parameter in gravity
 models” (Cliff, Martin, and Ord, n.d.) whereas others refer to ‘distance
 decay’ in spatial interaction and gravity models respectively: the terms
-are largely interchangeable \[Griffith and Jones (1980);McCall2006\].
+are largely interchangeable (Griffith and Jones 1980; **McCall2006?**).
 However, the question of precisely *how* the metaphorical friction
 increases with distance has been tackled to a lesser extent in the
 (generally older) literature using the term. The recent *d**d*
 literature, by contrast, is largely focussed this question, as described
 in the subsequent section.
 
-## Recent distance decay literature
+## 4.5 Recent distance decay literature
 
 As illustrated in Figure , *d**d* has grown rapidly as a term in the
 academic literature over the past 50 years, compared with the
@@ -181,9 +210,15 @@ and highly cited works that helped set the agenda for *d**d* research.
 “friction of distance” terms. (which tends to assign importance to
 interaction between places rather than the impact of distance)
 
-![Number of citations per decade for different terms for ‘distance
-decay’ from Google
-Scholar.](README_files/figure-gfm/unnamed-chunk-7-1.png)
+<div class="figure">
+
+<img src="README_files/figure-gfm/unnamed-chunk-6-1.png" alt="Number of citations per decade for different terms for 'distance decay' from Google Scholar."  />
+<p class="caption">
+(\#fcitationsunnamed-chunk-6)Number of citations per decade for
+different terms for ‘distance decay’ from Google Scholar.
+</p>
+
+</div>
 
 Within the general understanding that trips become less frequent with
 distance (beyond some threshold limit) there are various ways of
@@ -191,12 +226,12 @@ describing the dependent variable that *dd* functions seek to explain.
 *dd* can be understood as:
 
 -   the absolute number of trips expected for any given distance band
-    (*d**b*): *f*(*d*) = *T*\_*d**b*
+    (*d**b*): *f*(*d*) = *T*<sub>*d**b*</sub>
 -   the proportion of *all* trips that are made for a given distance
-    band: *f*(*d*) = *T*\_*d**b*/*T*
+    band: *f*(*d*) = *T*<sub>*d**b*</sub>/*T*
 -   the proportion of trips *within a given distance band* made by a
     particular trip type (e.g. walking):
-    *f*(*d*) = *T**w**a**l**k*\_*d**b*/*T*\_*d**b*
+    *f*(*d*) = *T**w**a**l**k*<sub>*d**b*</sub>/*T*<sub>*d**b*</sub>
 
 Of these definitions the second is the most generalisable, being a
 proportion (0 ≥ *p* ≤ 1) that tends to zero with increasing distance for
@@ -207,7 +242,7 @@ travel, for example, will tend to one for large trip distances). The
 first and simplest definition is the least generalisable as it is highly
 dependent on the total amount of travel.
 
-# Functional forms of distance decay
+# 5 Distance decay functions
 
 Four functional forms commonly used in the literature to characterise
 distance decay curves were described in a recent paper (Mart’ınez and
@@ -238,20 +273,62 @@ fit and each has a separate meaning:
 -   *v* affects the skewness of the curve
 -   *M* is the *x* value of maximum growth
 
-## A linear model
+Each of these distance decay functions was implemented on data
+representing commuting patterns by walking and cycling in three major UK
+cities with moderate, low and very low levels of walking and cycling
+mode share compared with international best practice: Cambridge, Leeds,
+and the rural local authority of Hereford. These cities were selected
+because they are of similar size but have widely different levels of
+walking and cycling, as shown in Figure
+<a href="#fig:pwalkcycle">5.1</a>. The aim is to test the distance decay
+functions in diverse contexts. Data on travel behaviour and route
+distances was taken from the Propensity to Cycle Tool, which provides
+open data on cycling and other modes across England from the 2011 Census
+(**lovelace\_2017\_propensity?**).
+
+<div class="figure">
+
+<img src="README_files/figure-gfm/pwalkcycle-1.png" alt="The proportion of people who walk (above) and cycle (below) to work in major (50+ commuters) origin-destination pairs in three English regions: Cambridge (left), Avon (centre) and West Yorkshire (right)."  />
+<p class="caption">
+Figure 5.1: The proportion of people who walk (above) and cycle (below)
+to work in major (50+ commuters) origin-destination pairs in three
+English regions: Cambridge (left), Avon (centre) and West Yorkshire
+(right).
+</p>
+
+</div>
+
+## 5.1 Linear models
 
 The simplest model to fit to the data is a linear model. For
 illustrative purposes we will fit a linear model to the data presented
 in Figure 1, with different intercepts and gradients for each of the
-groups (Figure 2):
+groups (Figure 2).
 
 The intercepts and gradients for each group are presented in table !!!
 
 The above numbers are equations that describe the relationship between
 distance and *clc* for each group. In the `Mal_Young_NC` group, for
-example,
+example.
 
-# References
+## 5.2 Exponential functions
+
+## 5.3 The beta function
+
+<div class="figure">
+
+<img src="README_files/figure-gfm/beta-1.png" alt="The beta function."  />
+<p class="caption">
+Figure 5.2: The beta function.
+</p>
+
+</div>
+
+# 6 Results
+
+# 7 Discussion and conclusion
+
+# 8 References
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
@@ -358,6 +435,15 @@ Miller, Eric J, John Douglas Hunt, John E Abraham, and Paul a Salvini.
 
 </div>
 
+<div id="ref-millward_activetransport_2013" class="csl-entry">
+
+Millward, Hugh, Jamie Spinney, and Darren Scott. 2013. “Active-Transport
+Walking Behavior: Destinations, Durations, Distances.” *Journal of
+Transport Geography* 28 (April): 101–10.
+<https://doi.org/10.1016/j.jtrangeo.2012.11.012>.
+
+</div>
+
 <div id="ref-Muvingi2012" class="csl-entry">
 
 Muvingi, Onai. 2012. “<span class="nocase">Restructuring air transport
@@ -385,6 +471,15 @@ spatial interaction models</span>.” *Environment and Planning A* 9 (2):
 
 Ravenstein, E G. 1885. “<span class="nocase">The law of retail
 gravity</span>.” New York: WJ Reily.
+
+</div>
+
+<div id="ref-rybarczyk_spatial_2018" class="csl-entry">
+
+Rybarczyk, Greg. 2018. “Toward a Spatial Understanding of Active
+Transportation Potential Among a University Population.” *International
+Journal of Sustainable Transportation* 12 (9): 625–36.
+<https://doi.org/10.1080/15568318.2017.1422301>.
 
 </div>
 

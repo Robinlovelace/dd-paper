@@ -1,6 +1,7 @@
 ---
 # output: github_document
-output: bookdown::pdf_document2
+# output: bookdown::pdf_document2
+output: bookdown::github_document2
 title: "Distance decay functions for modelling active travel uptake"
 bibliography: [ddp.bib, ddp2.bib]
 ---
@@ -211,7 +212,7 @@ consequence of the latter simply replacing the former. One study, for
 example, refers to "the friction of distance parameter in gravity
 models" [@cliff1974evaluating] whereas others refer to 'distance decay'
 in spatial interaction and gravity models respectively: the terms are
-largely interchangeable [@Griffith1980;McCall2006]. However, the
+largely interchangeable [@Griffith1980;@McCall2006]. However, the
 question of precisely *how* the metaphorical friction increases with
 distance has been tackled to a lesser extent in the (generally older)
 literature using the term. The recent $dd$ literature, by contrast, is
@@ -308,42 +309,46 @@ The aim is to test the distance decay functions in diverse contexts.
 Data on travel behaviour and route distances was taken from the Propensity to Cycle Tool, which provides open data on cycling and other modes across England from the 2011 Census [@lovelace_2017_propensity].
 
 ```{r, echo=FALSE, eval=FALSE}
-l = pct::get_pct(geography = "msoa", layer = "l", national = TRUE)
-sf::st_crs(l) = 4326
-rgx = "Hereford|Leeds|Cambridge$"
-l_cities = l %>% 
-  filter(str_detect(lad_name1, rgx) & str_detect(lad_name2, rgx))
-regions = c("cambridgeshire", "avon", "west-yorkshire")
-# regions = c("cambridgeshire", "humberside", "west-yorkshire")
+# l = pct::get_pct(geography = "msoa", layer = "l", national = TRUE)
+# rgx = "Hereford|Leeds|Cambridge$"
+# l_cities = l %>% 
+#   filter(str_detect(lad_name1, rgx) & str_detect(lad_name2, rgx))
+# regions = c("cambridgeshire", "avon", "west-yorkshire")
+regions = c("cambridgeshire", "humberside", "west-yorkshire")
 l = purrr::map_dfr(regions, ~pct::get_pct_lines(., geography = "msoa"), .id = "id")
+sf::st_crs(l) = 4326
+saveRDS(l, "l_regions-2020-10.Rds")
 names(l)
-nrow(l_cities) / nrow(l) # 1.6%, 7000 OD pairs
-summary(l_cities$all)
 # l_cities = l_cities %>% filter(all >= 20) %>% 
 l_cities = l %>% filter(all >= 50) %>% 
-  select(city = id, all:taxi_other, distance_euclidean = e_dist_km, distance = rf_dist_km, gradient = rf_avslope_perc, dutch_slc) %>% 
-  mutate(pcycle = bicycle / all, pwalk = foot / all)
-unique(l_cities$city)
+  select(region = id, all:taxi_other, distance_euclidean = e_dist_km, distance = rf_dist_km, gradient = rf_avslope_perc, dutch_slc) %>% 
+  mutate(pcycle = bicycle / all, pwalk = foot / all, pdrive = car_driver / all)
+unique(l_cities$region)
+l_cities$region = as.factor(l_cities$region)
 region_names_title = c("Cambridgeshire", "Avon", "West Yorkshire")
-l_cities$city = as.factor(l_cities$city)
-levels(l_cities$city) = region_names_title
-unique(l_cities$city)
+levels(l_cities$region) = region_names_title
+unique(l_cities$region)
 mapview::mapview(l_cities["pwalk"])
 saveRDS(l_cities, "l_cities.Rds")
 ```
 
 ```{r pwalkcycle, fig.cap="The proportion of people who walk (above) and cycle (below) to work in major (50+ commuters) origin-destination pairs in three English regions: Cambridge (left), Avon (centre) and West Yorkshire (right)."}
+region_names_title = c("Cambridgeshire", "Avon", "West Yorkshire")
 l_cities = readRDS("l_cities.Rds")
 g1 = ggplot(l_cities) +
   geom_point(aes(distance, pwalk, size = all), alpha = 0.1) +
-  facet_wrap(~city) +
-  ylim(c(0, 0.81))
+  facet_wrap(~region) +
+  ylim(c(0, 1))
 g2 = ggplot(l_cities) +
   geom_point(aes(distance, pcycle, size = all), alpha = 0.1) +
-  facet_wrap(~city) +
-  ylim(c(0, 0.81))
+  facet_wrap(~region) +
+  ylim(c(0, 1))
+g3 = ggplot(l_cities) +
+  geom_point(aes(distance, pdrive, size = all), alpha = 0.1) +
+  facet_wrap(~region) +
+  ylim(c(0, 1))
 library(patchwork)
-g1 / g2
+g1 / g2 / g3
 ```
 
 ## Linear models
@@ -361,6 +366,111 @@ distance and *clc* for each group. In the `Mal_Young_NC` group, for
 example.
 
 ## Exponential functions
+
+
+## The beta function
+
+```{r beta, fig.cap="The beta function."}
+# fail: overall model fit!
+# beta_walk = nls(pwalk ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities)
+# beta_walk_cam = nls(pwalk ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "Cambridgeshire"))
+# beta_walk_avo = nls(pwalk ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "Avon"))
+# beta_walk_wyk = nls(pwalk ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "West Yorkshire"))
+# beta_cy_cam = nls(pcycle ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "Cambridgeshire"))
+# beta_cy_avo = nls(pcycle ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "Avon"))
+# beta_cy_wyk = nls(pcycle ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 2), data = l_cities %>% filter(region == "West Yorkshire"))
+
+# beta_cycle = nls(pcycle ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities)
+# l_cities$beta_walk = predict(beta_walk, l_cities)
+# l_cities$beta_cycle = predict(beta_cycle, l_cities)
+# attempt with fancy nested code:
+# https://drsimonj.svbtle.com/running-a-model-on-separate-groups
+# l_cities_beta = l_cities %>% 
+#   sf::st_drop_geometry() %>% 
+#   select(region, pcycle, distance) %>% 
+#   nest(-region) %>% 
+#   mutate(
+#     fit = map(data, ~ nls(pcycle ~ a1*dbeta(distance/max(distance), s1, s2), start = s, data = .)),
+#     results = map(fit, augment)
+#     )
+
+# worked but doesn't give fitted values
+# l_cities %>% 
+#   sf::st_drop_geometry() %>% 
+#   group_by(region) %>% 
+#   group_modify(~broom::tidy(nls(pwalk ~ a1*dbeta(distance/max(distance), s1, s2), start = s, data = .x)))
+remotes::install_cran("minpack.lm")
+s = list(a1 = 0.1, s1 = 2, s2 = 10)
+by_city = l_cities %>% 
+  sf::st_drop_geometry() %>% 
+  group_by(region) %>% 
+  nest()
+
+s_2 = list(a1 = 0.1, s1 = 2, s2 = 3)
+s_3 = list(a1 = 0.5, s1 = 3, s2 = 1)
+library(minpack.lm)
+modw = function(df) {
+  minpack.lm::nlsLM(pwalk ~ a1*dbeta(distance/max(distance), s1, s2), start = s, data = df, weights = all)
+}
+modc = function(df) {
+  minpack.lm::nlsLM(pcycle ~ a1*dbeta(distance/max(distance), s1, s2), start = s_2, data = df, weights = all)
+}
+modd = function(df) {
+  # minpack.lm::nlsLM(pdrive ~ a1*dbeta(distance/max(distance), s1, s2), start = s_3, data = df, lower = c(0.1, 0.1, 0.1))
+  minpack.lm::nlsLM(pdrive ~ a1*dbeta(distance/(max(distance) * 1.01), s1, s2), start = s_3, data = df, lower = c(0.1, 0.1, 0.1), weights = all)
+}
+
+# by_city = by_city %>% 
+#   mutate(modelw = map(data, modw), predw = map(modelw, predict),
+#          modelc = map(data, modc), predc = map(modelc, predict),
+#          modeld = map(data, modd), predd = map(modeld, predict)
+#          )
+# # saving as it doesn't work with knitr for some reason...
+# saveRDS(by_city, "by_city-beta.Rds")
+by_city = readRDS("by_city-beta.Rds")
+l_beta = unnest(by_city, cols = c(data, predw, predc, predd))
+# text_betaw = map_dfr(by_city$modelw, ~round(coef(.), digits = 3))
+# text_betaw$a1 = paste("a: ", text_betaw$a1)
+# text_betaw$s1 = paste("s1: ", text_betaw$s1)
+# text_betaw$s2 = paste("s2: ", text_betaw$s2)
+# text_betaw$region = region_names_title
+# text_betac = map_dfr(by_city$modelc, ~round(coef(.), digits = 3))
+# text_betac$a1 = paste("a: ", text_betac$a1)
+# text_betac$s1 = paste("s1: ", text_betac$s1)
+# text_betac$s2 = paste("s2: ", text_betac$s2)
+# text_betac$region = region_names_title
+
+# for printing model results
+         
+g1 = ggplot(l_beta) +
+  geom_point(aes(distance, pwalk, size = all), alpha = 0.1) +
+  geom_line(aes(distance, predw), col = "red", size = 2) +
+  # geom_text(aes(x = 10, y = 0.8, label = a1), data = text_betaw) +
+  # geom_text(aes(x = 10, y = 0.7, label = s1), data = text_betaw) +
+  # geom_text(aes(x = 10, y = 0.6, label = s2), data = text_betaw) +
+  facet_wrap(~region) +
+  ylim(c(0, 1)) +
+  xlim(c(0, 5))
+g2 = ggplot(l_beta) +
+  geom_point(aes(distance, pcycle, size = all), alpha = 0.1) +
+  geom_line(aes(distance, predc), col = "red", size = 2) +
+  # geom_text(aes(x = 10, y = 0.8, label = a1), data = text_betac) +
+  # geom_text(aes(x = 10, y = 0.7, label = s1), data = text_betac) +
+  # geom_text(aes(x = 10, y = 0.6, label = s2), data = text_betac) +
+  facet_wrap(~region) +
+  ylim(c(0, 1))
+g3 = ggplot(l_beta) +
+  geom_point(aes(distance, pdrive, size = all), alpha = 0.1) +
+  geom_line(aes(distance, predd), col = "red", size = 2) +
+  # geom_text(aes(x = 10, y = 0.8, label = a1), data = text_betac) +
+  # geom_text(aes(x = 10, y = 0.7, label = s1), data = text_betac) +
+  # geom_text(aes(x = 10, y = 0.6, label = s2), data = text_betac) +
+  facet_wrap(~region) +
+  ylim(c(0, 1))
+g1 / g2 / g3
+
+# for fun: predict back to 0
+```
 
 
 
