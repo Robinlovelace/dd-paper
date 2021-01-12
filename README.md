@@ -2,6 +2,12 @@ Distance decay functions for modelling active travel uptake
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- paper highlights -->
+<!-- many ways to simulate the impact of distance -->
+<!-- pros and cons of different approaches -->
+<!-- for walking:  -->
+<!-- for cycling: -->
+<!-- next steps... -->
 
 # 1 Abstract
 
@@ -185,12 +191,11 @@ a consequence of the latter simply replacing the former. One study, for
 example, refers to “the friction of distance parameter in gravity
 models” (Cliff, Martin, and Ord, n.d.) whereas others refer to ‘distance
 decay’ in spatial interaction and gravity models respectively: the terms
-are largely interchangeable (Griffith and Jones 1980; **McCall2006?**).
-However, the question of precisely *how* the metaphorical friction
-increases with distance has been tackled to a lesser extent in the
-(generally older) literature using the term. The recent *d**d*
-literature, by contrast, is largely focussed this question, as described
-in the subsequent section.
+are largely interchangeable (Griffith and Jones 1980). However, the
+question of precisely *how* the metaphorical friction increases with
+distance has been tackled to a lesser extent in the (generally older)
+literature using the term. The recent *d**d* literature, by contrast, is
+largely focussed this question, as described in the subsequent section.
 
 ## 4.5 Recent distance decay literature
 
@@ -245,8 +250,8 @@ dependent on the total amount of travel.
 # 5 Distance decay functions
 
 Four functional forms commonly used in the literature to characterise
-distance decay curves were described in a recent paper (Mart’ınez and
-Viegas 2013) <!-- [@Martinez2013]  --> as:
+distance decay curves were described in Martínez and Viegas (2013) and
+Levinson and King (2020). <!-- [@Martinez2013]  --> as:
 
 -   Exponential functions, *e*<sup>*β**x*</sup> (A. Wilson 1971).
 -   Power functions, *x*<sup>*β*</sup> (Fotheringham 1981).
@@ -280,23 +285,11 @@ mode share compared with international best practice: Cambridge, Leeds,
 and the rural local authority of Hereford. These cities were selected
 because they are of similar size but have widely different levels of
 walking and cycling, as shown in Figure
-<a href="#fig:pwalkcycle">5.1</a>. The aim is to test the distance decay
-functions in diverse contexts. Data on travel behaviour and route
-distances was taken from the Propensity to Cycle Tool, which provides
-open data on cycling and other modes across England from the 2011 Census
-(**lovelace\_2017\_propensity?**).
-
-<div class="figure">
-
-<img src="README_files/figure-gfm/pwalkcycle-1.png" alt="The proportion of people who walk (above) and cycle (below) to work in major (50+ commuters) origin-destination pairs in three English regions: Cambridge (left), Avon (centre) and West Yorkshire (right)."  />
-<p class="caption">
-Figure 5.1: The proportion of people who walk (above) and cycle (below)
-to work in major (50+ commuters) origin-destination pairs in three
-English regions: Cambridge (left), Avon (centre) and West Yorkshire
-(right).
-</p>
-
-</div>
+<a href="#fig:pwalkcycle"><strong>??</strong></a>. The aim is to test
+the distance decay functions in diverse contexts. Data on travel
+behaviour and route distances was taken from the Propensity to Cycle
+Tool, which provides open data on cycling and other modes across England
+from the 2011 Census (Lovelace et al. 2017).
 
 ## 5.1 Linear models
 
@@ -310,6 +303,15 @@ The intercepts and gradients for each group are presented in table !!!
 The above numbers are equations that describe the relationship between
 distance and *clc* for each group. In the `Mal_Young_NC` group, for
 example.
+
+<div class="figure">
+
+<img src="README_files/figure-gfm/linear-1.png" alt="Simple linear model."  />
+<p class="caption">
+Figure 5.1: Simple linear model.
+</p>
+
+</div>
 
 ## 5.2 Exponential functions
 
@@ -398,6 +400,22 @@ class="nocase">Gravity model in the Korean highway</span>.” *EPL
 
 </div>
 
+<div id="ref-levinson_transport_2020" class="csl-entry">
+
+Levinson, David, and David King. 2020. “Transport Access Manual: A Guide
+for Measuring Connection Between People and Places.”
+
+</div>
+
+<div id="ref-lovelace_propensity_2017" class="csl-entry">
+
+Lovelace, Robin, Anna Goodman, Rachel Aldred, Nikolai Berkoff, Ali
+Abbas, and James Woodcock. 2017. “The Propensity to Cycle Tool: An Open
+Source Online System for Sustainable Transport Planning.” *Journal of
+Transport and Land Use* 10 (1). <https://doi.org/10.5198/jtlu.2016.862>.
+
+</div>
+
 <div id="ref-MacKay13082013" class="csl-entry">
 
 MacKay, David J C. 2013. “<span class="nocase">Solar energy in the
@@ -409,7 +427,7 @@ context of energy use, energy transportation and energy storage</span>.”
 
 <div id="ref-martinez_new_2013" class="csl-entry">
 
-Mart’ınez, L. Miguel, and Jos’e Manuel Viegas. 2013. “A New Approach to
+Martínez, L. Miguel, and José Manuel Viegas. 2013. “A New Approach to
 Modelling Distance-Decay Functions for Accessibility Assessment in
 Transport Studies.” *Journal of Transport Geography* 26: 87–96.
 <https://doi.org/10.1016/j.jtrangeo.2012.08.018>.

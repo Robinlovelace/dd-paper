@@ -1,8 +1,11 @@
 ---
-output: bookdown::pdf_document2
-# output: bookdown::github_document2
+# output: bookdown::pdf_document2
+output: bookdown::github_document2
 title: "Distance decay functions for modelling active travel uptake"
-bibliography: [ddp.bib, ddp2.bib]
+bibliography: 
+  - ddp.bib
+  - /home/robin/uaf/allrefs.bib
+  # - ddp2.bib]
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -220,7 +223,7 @@ consequence of the latter simply replacing the former. One study, for
 example, refers to "the friction of distance parameter in gravity
 models" [@cliff1974evaluating] whereas others refer to 'distance decay'
 in spatial interaction and gravity models respectively: the terms are
-largely interchangeable [@Griffith1980;@McCall2006]. However, the
+largely interchangeable [@Griffith1980]. However, the
 question of precisely *how* the metaphorical friction increases with
 distance has been tackled to a lesser extent in the (generally older)
 literature using the term. The recent $dd$ literature, by contrast, is
@@ -284,8 +287,7 @@ as it is highly dependent on the total amount of travel.
 # Distance decay functions {#funs}
 
 Four functional forms commonly used in the literature to characterise
-distance decay curves were described in a recent paper
-[@martinez_new_2013]
+distance decay curves were described in @martinez_new_2013 and @levinson_transport_2020.
 <!-- [@Martinez2013]  -->
 as:
 
@@ -314,7 +316,7 @@ fit and each has a separate meaning:
 Each of these distance decay functions was implemented on data representing commuting patterns by walking and cycling in three major UK cities with moderate, low and very low levels of walking and cycling mode share compared with international best practice: Cambridge, Leeds, and the rural local authority of Hereford.
 These cities were selected because they are of similar size but have widely different levels of walking and cycling, as shown in Figure \@ref(fig:pwalkcycle).
 The aim is to test the distance decay functions in diverse contexts.
-Data on travel behaviour and route distances was taken from the Propensity to Cycle Tool, which provides open data on cycling and other modes across England from the 2011 Census [@lovelace_2017_propensity].
+Data on travel behaviour and route distances was taken from the Propensity to Cycle Tool, which provides open data on cycling and other modes across England from the 2011 Census [@lovelace_propensity_2017].
 
 ```{r, echo=FALSE, eval=FALSE}
 
