@@ -1,7 +1,6 @@
 ---
-# output: github_document
-# output: bookdown::pdf_document2
-output: bookdown::github_document2
+output: bookdown::pdf_document2
+# output: bookdown::github_document2
 title: "Distance decay functions for modelling active travel uptake"
 bibliography: [ddp.bib, ddp2.bib]
 ---
@@ -24,6 +23,13 @@ knitr::opts_chunk$set(
 )
 library(tidyverse)
 ```
+
+<!-- paper highlights -->
+<!-- many ways to simulate the impact of distance -->
+<!-- pros and cons of different approaches -->
+<!-- for walking:  -->
+<!-- for cycling: -->
+<!-- next steps... -->
 
 # Abstract
 
