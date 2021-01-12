@@ -22,6 +22,8 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 library(tidyverse)
+by_city_lm = readRDS("by_city_lm.Rds")
+by_city_beta = readRDS("by_city_beta.Rds")
 ```
 
 <!-- paper highlights -->
@@ -315,46 +317,11 @@ The aim is to test the distance decay functions in diverse contexts.
 Data on travel behaviour and route distances was taken from the Propensity to Cycle Tool, which provides open data on cycling and other modes across England from the 2011 Census [@lovelace_2017_propensity].
 
 ```{r, echo=FALSE, eval=FALSE}
-# l = pct::get_pct(geography = "msoa", layer = "l", national = TRUE)
-# rgx = "Hereford|Leeds|Cambridge$"
-# l_cities = l %>% 
-#   filter(str_detect(lad_name1, rgx) & str_detect(lad_name2, rgx))
-# regions = c("cambridgeshire", "avon", "west-yorkshire")
-regions = c("cambridgeshire", "humberside", "west-yorkshire")
-l = purrr::map_dfr(regions, ~pct::get_pct_lines(., geography = "msoa"), .id = "id")
-sf::st_crs(l) = 4326
-saveRDS(l, "l_regions-2020-10.Rds")
-names(l)
-# l_cities = l_cities %>% filter(all >= 20) %>% 
-l_cities = l %>% filter(all >= 50) %>% 
-  select(region = id, all:taxi_other, distance_euclidean = e_dist_km, distance = rf_dist_km, gradient = rf_avslope_perc, dutch_slc) %>% 
-  mutate(pcycle = bicycle / all, pwalk = foot / all, pdrive = car_driver / all)
-unique(l_cities$region)
-l_cities$region = as.factor(l_cities$region)
-region_names_title = c("Cambridgeshire", "Avon", "West Yorkshire")
-levels(l_cities$region) = region_names_title
-unique(l_cities$region)
-mapview::mapview(l_cities["pwalk"])
-saveRDS(l_cities, "l_cities.Rds")
+
 ```
 
 ```{r pwalkcycle, fig.cap="The proportion of people who walk (above) and cycle (below) to work in major (50+ commuters) origin-destination pairs in three English regions: Cambridge (left), Avon (centre) and West Yorkshire (right)."}
-region_names_title = c("Cambridgeshire", "Avon", "West Yorkshire")
-l_cities = readRDS("l_cities.Rds")
-g1 = ggplot(l_cities) +
-  geom_point(aes(distance, pwalk, size = all), alpha = 0.1) +
-  facet_wrap(~region) +
-  ylim(c(0, 1))
-g2 = ggplot(l_cities) +
-  geom_point(aes(distance, pcycle, size = all), alpha = 0.1) +
-  facet_wrap(~region) +
-  ylim(c(0, 1))
-g3 = ggplot(l_cities) +
-  geom_point(aes(distance, pdrive, size = all), alpha = 0.1) +
-  facet_wrap(~region) +
-  ylim(c(0, 1))
-library(patchwork)
-g1 / g2 / g3
+
 ```
 
 ## Linear models
@@ -371,111 +338,28 @@ The above numbers are equations that describe the relationship between
 distance and *clc* for each group. In the `Mal_Young_NC` group, for
 example.
 
+```{r linear, fig.cap="Simple linear model."}
+ggplot(by_city_lm) +
+  geom_point(aes(distance, proportion, size = all), alpha = 0.1) +
+  facet_grid(mode ~ region) +
+  geom_line(aes(distance, pred), col = "red", size = 2) +
+  ylim(c(0, 1)) +
+  xlim(c(0, 10))
+```
+
+
 ## Exponential functions
 
 
 ## The beta function
 
 ```{r beta, fig.cap="The beta function."}
-# fail: overall model fit!
-# beta_walk = nls(pwalk ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities)
-# beta_walk_cam = nls(pwalk ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "Cambridgeshire"))
-# beta_walk_avo = nls(pwalk ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "Avon"))
-# beta_walk_wyk = nls(pwalk ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "West Yorkshire"))
-# beta_cy_cam = nls(pcycle ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "Cambridgeshire"))
-# beta_cy_avo = nls(pcycle ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities %>% filter(region == "Avon"))
-# beta_cy_wyk = nls(pcycle ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 2), data = l_cities %>% filter(region == "West Yorkshire"))
-
-# beta_cycle = nls(pcycle ~ a1*dbeta(distance/max(distance), shape1 = s1, shape2 = s2), start = list(a1 = 0.1, s1 = 2, s2 = 10), data = l_cities)
-# l_cities$beta_walk = predict(beta_walk, l_cities)
-# l_cities$beta_cycle = predict(beta_cycle, l_cities)
-# attempt with fancy nested code:
-# https://drsimonj.svbtle.com/running-a-model-on-separate-groups
-# l_cities_beta = l_cities %>% 
-#   sf::st_drop_geometry() %>% 
-#   select(region, pcycle, distance) %>% 
-#   nest(-region) %>% 
-#   mutate(
-#     fit = map(data, ~ nls(pcycle ~ a1*dbeta(distance/max(distance), s1, s2), start = s, data = .)),
-#     results = map(fit, augment)
-#     )
-
-# worked but doesn't give fitted values
-# l_cities %>% 
-#   sf::st_drop_geometry() %>% 
-#   group_by(region) %>% 
-#   group_modify(~broom::tidy(nls(pwalk ~ a1*dbeta(distance/max(distance), s1, s2), start = s, data = .x)))
-remotes::install_cran("minpack.lm")
-s = list(a1 = 0.1, s1 = 2, s2 = 10)
-by_city = l_cities %>% 
-  sf::st_drop_geometry() %>% 
-  group_by(region) %>% 
-  nest()
-
-s_2 = list(a1 = 0.1, s1 = 2, s2 = 3)
-s_3 = list(a1 = 0.5, s1 = 3, s2 = 1)
-library(minpack.lm)
-modw = function(df) {
-  minpack.lm::nlsLM(pwalk ~ a1*dbeta(distance/max(distance), s1, s2), start = s, data = df, weights = all)
-}
-modc = function(df) {
-  minpack.lm::nlsLM(pcycle ~ a1*dbeta(distance/max(distance), s1, s2), start = s_2, data = df, weights = all)
-}
-modd = function(df) {
-  # minpack.lm::nlsLM(pdrive ~ a1*dbeta(distance/max(distance), s1, s2), start = s_3, data = df, lower = c(0.1, 0.1, 0.1))
-  minpack.lm::nlsLM(pdrive ~ a1*dbeta(distance/(max(distance) * 1.01), s1, s2), start = s_3, data = df, lower = c(0.1, 0.1, 0.1), weights = all)
-}
-
-# by_city = by_city %>% 
-#   mutate(modelw = map(data, modw), predw = map(modelw, predict),
-#          modelc = map(data, modc), predc = map(modelc, predict),
-#          modeld = map(data, modd), predd = map(modeld, predict)
-#          )
-# # saving as it doesn't work with knitr for some reason...
-# saveRDS(by_city, "by_city-beta.Rds")
-by_city = readRDS("by_city-beta.Rds")
-l_beta = unnest(by_city, cols = c(data, predw, predc, predd))
-# text_betaw = map_dfr(by_city$modelw, ~round(coef(.), digits = 3))
-# text_betaw$a1 = paste("a: ", text_betaw$a1)
-# text_betaw$s1 = paste("s1: ", text_betaw$s1)
-# text_betaw$s2 = paste("s2: ", text_betaw$s2)
-# text_betaw$region = region_names_title
-# text_betac = map_dfr(by_city$modelc, ~round(coef(.), digits = 3))
-# text_betac$a1 = paste("a: ", text_betac$a1)
-# text_betac$s1 = paste("s1: ", text_betac$s1)
-# text_betac$s2 = paste("s2: ", text_betac$s2)
-# text_betac$region = region_names_title
-
-# for printing model results
-         
-g1 = ggplot(l_beta) +
-  geom_point(aes(distance, pwalk, size = all), alpha = 0.1) +
-  geom_line(aes(distance, predw), col = "red", size = 2) +
-  # geom_text(aes(x = 10, y = 0.8, label = a1), data = text_betaw) +
-  # geom_text(aes(x = 10, y = 0.7, label = s1), data = text_betaw) +
-  # geom_text(aes(x = 10, y = 0.6, label = s2), data = text_betaw) +
-  facet_wrap(~region) +
+ggplot(by_city_beta) +
+  geom_point(aes(distance, proportion, size = all), alpha = 0.1) +
+  facet_grid(mode ~ region) +
+  geom_line(aes(distance, pred), col = "red", size = 2) +
   ylim(c(0, 1)) +
-  xlim(c(0, 5))
-g2 = ggplot(l_beta) +
-  geom_point(aes(distance, pcycle, size = all), alpha = 0.1) +
-  geom_line(aes(distance, predc), col = "red", size = 2) +
-  # geom_text(aes(x = 10, y = 0.8, label = a1), data = text_betac) +
-  # geom_text(aes(x = 10, y = 0.7, label = s1), data = text_betac) +
-  # geom_text(aes(x = 10, y = 0.6, label = s2), data = text_betac) +
-  facet_wrap(~region) +
-  ylim(c(0, 1))
-g3 = ggplot(l_beta) +
-  geom_point(aes(distance, pdrive, size = all), alpha = 0.1) +
-  geom_line(aes(distance, predd), col = "red", size = 2) +
-  # geom_text(aes(x = 10, y = 0.8, label = a1), data = text_betac) +
-  # geom_text(aes(x = 10, y = 0.7, label = s1), data = text_betac) +
-  # geom_text(aes(x = 10, y = 0.6, label = s2), data = text_betac) +
-  facet_wrap(~region) +
-  ylim(c(0, 1))
-g1 / g2 / g3
-
-# for fun: predict back to 0
+  xlim(c(0, 10))
 ```
 
 
@@ -486,71 +370,5 @@ g1 / g2 / g3
 
 # Discussion and conclusion
 
-```{r, echo=FALSE}
-# $$
-# clc ~ (0.0941 - 0.0682) + (-0.00377 + 0.00301)  * dist
-# $$
-# 
-# Let's double-check this makes sense: 
-# 
-# ```{r, fig.cap="Demonstration of the meaning of the parameters produced by the 'summary()' function for the linear model (m1) for the group 'Mal_Young_NC'.", fig.height=3, fig.width=4, echo=FALSE}
-# mync <- filter(ntss, segment == "Mal_Young_NC")
-# mync$m1 <- (0.0941 - 0.0682) + (-0.00377 + 0.00301)  * mync$dist
-# plot(mync$dist, mync$clc)
-# lines(mync$dist, mync$m1)
-# ```
-# 
-# 
-# Considering the linear model is so simple, an adjusted R squared value of
-# 0.58 is not bad! 
-# 
-# Now we will progress to fit slightly more complicated polynomial models.
-# 
-# ## Cubic polynomial models
-# 
-# The results of the cubic models are displayed in Figure 4.
-# 
-# ```{r, echo=FALSE, fig.cap="Different versions of the cubic polynomial distance decay function fitted to the data with per-covariate parameters estimated for linear, square, cubic and all power terms (red, green, blue and yellow lines respectively)."}
-# m2 <- lm(clc ~ dist * segment + I(dist^2) + I(dist^3), data = ntss) 
-# m3 <- lm(clc ~ dist + I(dist^2) * segment + I(dist^3), data = ntss) 
-# m4 <- lm(clc ~ dist + I(dist^2) + I(dist^3) * segment, data = ntss) 
-# m5 <- lm(clc ~ dist * segment + I(dist^2) * segment + I(dist^3) * 
-#     segment, data = ntss) 
-# p1 + geom_line(aes(y = m2$fitted.values), color = "red") +
-#   geom_line(aes(y = m3$fitted.values), color = "green") +
-#   geom_line(aes(y = m4$fitted.values), color = "blue") +
-#   geom_line(aes(y = m5$fitted.values), color = "yellow", size = 3, alpha = 0.5)
-# ```
-# 
-# Note that there are different ways to fit parameters to the model: we can change
-# one parameter value for every group, or we can change many. In the finat model
-# presented in yellow if Figure 4, we changed all four
-# parameters in response to every
-# group. Thus we have calculated 32 parameter values! This is not a problem: we
-# can extract each formula from the coefficients. Lets extract them for the
-# `Fem_Old_NC` group, for example:
-# 
-# ```{r, echo=FALSE}
-# c5 <- coefficients(m5)
-# c5[grep("Fem_Old_NC", names(c5))]
-# ```
-# 
-# ```{r, echo=FALSE, eval=FALSE}
-# # Which model fits best
-# summary(m1)
-# summary(m2)
-# summary(m3)
-# summary(m4)
-# summary(m5)
-# ```
-# 
-# Of the cubic models fitted, the one with 32 parameters (8 for each parameter in
-# the general model) fits by far the best with the data, with an adjusted R-squared
-# value of 0.89.
-# 
-# From the preceeding analysis, it is clear that a 4 parameter polynomial model
-# fits sufficiently well for modelling: after all, we are interested in a simple
-# way to increase the update of cycling not *fit curves to the current rate of cycling*.
-```
 
 # References
