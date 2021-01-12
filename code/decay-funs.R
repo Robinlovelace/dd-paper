@@ -1,22 +1,47 @@
 remotes::install_cran("minpack.lm")
 library(tidyverse)
 
+# l = pct::get_pct(geography = "msoa", layer = "l", national = TRUE)
+# rgx = "Hereford|Leeds|Cambridge$"
+# l_cities = l %>%
+#   filter(str_detect(lad_name1, rgx) & str_detect(lad_name2, rgx))
+# regions = c("cambridgeshire", "avon", "west-yorkshire")
+regions = c("cambridgeshire", "humberside", "west-yorkshire")
+modes_of_interest = c("foot", "bicycle", "car_driver")
+modes_of_interest = c("foot", "bicycle")
+
+l = purrr::map_dfr(regions, ~pct::get_pct_lines(., geography = "msoa"), .id = "id")
+sf::st_crs(l) = 4326
+saveRDS(l, "l_regions-2020-10.Rds")
+names(l)
+# l_cities = l_cities %>% filter(all >= 20) %>%
+l_cities = l %>% filter(all >= 50) %>%
+  select(region = id, all:taxi_other, distance_euclidean = e_dist_km, distance = rf_dist_km, gradient = rf_avslope_perc, dutch_slc) %>%
+  mutate(pcycle = bicycle / all, pwalk = foot / all, pdrive = car_driver / all)
+unique(l_cities$region)
+l_cities$region = as.factor(l_cities$region)
 region_names_title = c("Cambridgeshire", "Avon", "West Yorkshire")
-l_cities = readRDS("l_cities.Rds")
-g1 = ggplot(l_cities) +
-  geom_point(aes(distance, pwalk, size = all), alpha = 0.1) +
-  facet_wrap(~region) +
+unique(l_cities$region)
+# mapview::mapview(l_cities["pwalk"])
+class(l_cities$region)
+saveRDS(l_cities, "l_cities.Rds")
+l_cities_long = l_cities %>%
+  select(-matches("pc|pw|pd")) %>%
+  sf::st_drop_geometry() %>%
+  tidyr::pivot_longer(cols = bicycle:taxi_other, names_to = "Mode") %>%
+  mutate(proportion = value/all) %>%
+  filter(Mode %in% modes_of_interest)
+class(l_cities_long$region) # char
+l_cities_long$region = as.factor(l_cities_long$region)
+summary(l_cities_long$region)
+levels(l_cities_long$region) = region_names_title
+# l_cities_long$Region = factor(as.numeric(l_cities_long$region), ordered = TRUE, levels = region_names_title)
+# summary(l_cities_long$Region)
+
+ggplot(l_cities_long) +
+  geom_point(aes(distance, proportion, size = all), alpha = 0.1) +
+  facet_grid(region ~ Mode) +
   ylim(c(0, 1))
-g2 = ggplot(l_cities) +
-  geom_point(aes(distance, pcycle, size = all), alpha = 0.1) +
-  facet_wrap(~region) +
-  ylim(c(0, 1))
-g3 = ggplot(l_cities) +
-  geom_point(aes(distance, pdrive, size = all), alpha = 0.1) +
-  facet_wrap(~region) +
-  ylim(c(0, 1))
-library(patchwork)
-g1 / g2 / g3
 
 # linear models
 
@@ -25,11 +50,7 @@ by_city = l_cities %>%
   group_by(region) %>%
   nest()
 
-by_city_mode = l_cities %>%
-  sf::st_drop_geometry() %>%
-  tidyr::pivot_longer(cols = all:taxi_other, names_to = "mode") %>%
-  group_by(region) %>%
-  nest()
+
 
 modlm = function(df) {
   # minpack.lm::nlsLM(pdrive ~ a1*dbeta(distance/max(distance), s1, s2), start = s_3, data = df, lower = c(0.1, 0.1, 0.1))
