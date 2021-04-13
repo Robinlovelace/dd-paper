@@ -44,7 +44,8 @@ ggplot(l_cities_long) +
   facet_grid(mode ~ region) +
   ylim(c(0, 1))
 
-# linear models
+
+# Linear models -----------------------------------------------------------
 
 by_city = l_cities_long %>%
   group_by(region, mode) %>%

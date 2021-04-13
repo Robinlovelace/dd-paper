@@ -388,7 +388,7 @@ Iacono, Michael, Kevin Krizek, and Ahmed El-Geneidy. 2008. “<span
 class="nocase">Access to Destinations: How Close is Close Enough?
 Estimating Accurate Distance Decay Functions for Multiple Modes and
 Different Purposes</span>,” 76.
-[http://www.lrrb.org/PDF/200811.pdf\\backslashnhttp://www.cts.umn.edu/access-study/research/6/index.html](http://www.lrrb.org/PDF/200811.pdf\backslashnhttp://www.cts.umn.edu/access-study/research/6/index.html).
+[http://www.lrrb.org/PDF/200811.pdf$\\backslash$nhttp://www.cts.umn.edu/access-study/research/6/index.html](http://www.lrrb.org/PDF/200811.pdf$\backslash$nhttp://www.cts.umn.edu/access-study/research/6/index.html).
 
 </div>
 
