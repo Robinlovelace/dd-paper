@@ -59,7 +59,7 @@ A summary of results is presented in Section \@ref(results), which are discussed
 
 *Distance decay* --- along with the synonymous *deterrence function* [@simini_universal_2012] --- builds on older terms expressing the same fundamental truth, such as the 'friction of distance' and the 'gravity model' (described in the subsequent section).
 Work focussed explicitly on $dd$ explores *how* the proportion of trips ($p$) declines with distance ($d$) [@iacono_models_2008], beyond the simple observation that the slope is negative beyond a certain threshold distance.
-A resergence of interest in the distance-frequency relationship has refined and, in some cases, sought to overturn pre-existing (and often context-specific) formulations, such as $p = \\alpha e^{\\beta d}$ [@wilson_family_1971] and $p = \\alpha d^{\\beta}$ [@fotheringham_spatial_1981].
+A resergence of interest in the distance-frequency relationship has refined and, in some cases, sought to overturn pre-existing (and often context-specific) formulations, such as $p = \alpha e^{\beta d}$ [@wilson_family_1971] and $p = \alpha d^{\beta}$ [@fotheringham_spatial_1981].
 Much *dd* research asks: what is the best function for linking the proportion (different types of) trip to distance?
 
 Mathematically, what is *f* of *x*
@@ -201,9 +201,11 @@ Four functional forms commonly used in the literature to characterise distance d
 -   Exponential functions, $e^{\beta x}$ [@wilson_family_1971].
 -   Power functions, $x^{\\beta}$ [@fotheringham_spatial_1981].
 -   Tanner functions, $x^{\\beta_1} e^{\\beta_2 x}$ [@openshaw_optimal_1977].
--   Box-Cox functions, $exp(\\beta \\frac{x^{\\gamma} - 1}{\\gamma})$ when the parameter $\\gamma \\neq 0$ and $x^{\\beta}$ when $\\gamma = 0$
+-   Box-Cox functions, $exp(\beta \frac{x^{\gamma} - 1}{\gamma})$ when the parameter $\gamma \neq 0$ and $x^{\beta}$ when $\gamma = 0$
 
-In addition to these, we have explore the additional functional forms:
+In addition to these, we explored the additional functional forms:
+
+[Robin: I think a table here would be useful]
 
 -   Modified beta distributions, which have been used to model distance decay in ecological research [@nekola_scale_2014]
 -   A modified version of the generalised logistic or 'Richards' function
@@ -234,11 +236,6 @@ Data on travel behaviour and route distances was taken from the Propensity to Cy
 
 The simplest model to fit to the data is a linear model.
 For illustrative purposes we will fit a linear model to the data presented in Figure 1, with different intercepts and gradients for each of the groups (Figure 2).
-
-The intercepts and gradients for each group are presented in table !!!
-
-The above numbers are equations that describe the relationship between distance and *clc* for each group.
-In the `Mal_Young_NC` group, for example.
 
 ```{r linear, fig.cap="Simple linear model."}
 ggplot(by_city_lm) +
