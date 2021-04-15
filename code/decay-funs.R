@@ -55,8 +55,29 @@ modlm = function(d) {
   stats::lm(proportion ~ distance, weights = all, data = d)
 }
 
-by_city_lm = by_city %>%
-  mutate(model_lm = map(data, modlm), pred = map(model_lm, predict)) %>%
+by_city_lm_nest = by_city %>%
+  mutate(model_lm = map(data, modlm), pred = map(model_lm, predict))
+
+# check model contents
+by_city_lm_nest[1, ]$model_lm
+summary(by_city_lm_nest[1, ]$model_lm[[1]])$r.squared
+AIC(by_city_lm_nest[1, ]$model_lm[[1]])
+by_city_lm_nest[1, ]$pred
+by_city_lm_nest[1, ]$data[[1]]$proportion
+
+by_city_lm_nest = by_city %>%
+  mutate(
+    model_lm = map(data, modlm),
+    pred = map(model_lm, predict),
+    cor = map(
+      model_lm,
+      function(x) summary(x$r.squared)
+    )
+  )
+
+by_city_lm_nest[1, ]$cor
+
+by_city_lm = by_city_lm_nest %>%
   unnest(cols = c(data, pred)) %>%
   select(region, mode, all, distance, distance_euclidean, gradient, value, proportion, pred) %>%
   ungroup()
