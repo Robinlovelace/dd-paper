@@ -70,12 +70,51 @@ g_lm = ggplot(by_city_lm) +
   ylim(c(0, 1)) +
   xlim(c(0, 10))
 
+g_lm
 saveRDS(by_city_lm, "by_city_lm.Rds" )
+
+
+# Exponential -------------------------------------------------------------
+s_2 = list(a1 = 0.1)
+s_3 = list(a1 = 0.5, s1 = 3, s2 = 1)
+modexp = function(d) {
+  minpack.lm::nlsLM(
+    proportion ~ exp(distance)^a1,
+    start = s_2,
+    data = d,
+    weights = all
+  )
+}
+
+by_city_exp = by_city %>%
+  mutate(model_exp = map(data, modexp), pred = map(model_exp, predict)) %>%
+  unnest(cols = c(data, pred)) %>%
+  select(region, mode, all, distance, distance_euclidean, gradient, value, proportion, pred) %>%
+  ungroup()
+
+names(by_city_exp)
+
+g_exp = ggplot(by_city_exp) +
+  geom_point(aes(distance, proportion, size = all), alpha = 0.1) +
+  facet_grid(mode ~ region) +
+  geom_line(aes(distance, pred), col = "red", size = 2) +
+  ylim(c(0, 1)) +
+  xlim(c(0, 10))
+
+g_exp
+saveRDS(by_city_exp, "by_city_exp.Rds" )
+
+# Beta function -----------------------------------------------------------
 
 s_2 = list(a1 = 0.1, s1 = 2, s2 = 3)
 s_3 = list(a1 = 0.5, s1 = 3, s2 = 1)
 modbeta = function(d) {
-  minpack.lm::nlsLM(proportion ~ a1*dbeta(distance/max(distance), s1, s2), start = s_2, data = d, weights = all)
+  minpack.lm::nlsLM(
+    proportion ~ a1 * dbeta(distance / max(distance), s1, s2),
+    start = s_2,
+    data = d,
+    weights = all
+  )
 }
 
 by_city_beta = by_city %>%
