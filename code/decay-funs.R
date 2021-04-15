@@ -76,7 +76,7 @@ saveRDS(by_city_lm, "by_city_lm.Rds" )
 
 # Exponential -------------------------------------------------------------
 s_2 = list(a1 = 0.1)
-s_3 = list(a1 = 0.5, s1 = 3, s2 = 1)
+
 modexp = function(d) {
   minpack.lm::nlsLM(
     proportion ~ exp(distance)^a1,
@@ -131,3 +131,33 @@ ggplot(by_city_beta) +
   xlim(c(0, 10))
 
 saveRDS(by_city_beta, "by_city_beta.Rds")
+
+# Power function (Gravity) -------------------------------------------------------------
+s_2 = list(a1 = 0.1)
+
+modpwr = function(d) {
+  minpack.lm::nlsLM(
+    proportion ~ distance^a1,
+    start = s_2,
+    data = d,
+    weights = all
+  )
+}
+
+by_city_pwr = by_city %>%
+  mutate(model_pwr = map(data, modpwr), pred = map(model_pwr, predict)) %>%
+  unnest(cols = c(data, pred)) %>%
+  select(region, mode, all, distance, distance_euclidean, gradient, value, proportion, pred) %>%
+  ungroup()
+
+names(by_city_pwr)
+
+g_pwr = ggplot(by_city_pwr) +
+  geom_point(aes(distance, proportion, size = all), alpha = 0.1) +
+  facet_grid(mode ~ region) +
+  geom_line(aes(distance, pred), col = "red", size = 2) +
+  ylim(c(0, 1)) +
+  xlim(c(0, 10))
+
+g_pwr
+saveRDS(by_city_pwr, "by_city_pwr.Rds" )
