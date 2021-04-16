@@ -60,23 +60,38 @@ by_city_lm_nest = by_city %>%
 
 # check model contents
 by_city_lm_nest[1, ]$model_lm
-summary(by_city_lm_nest[1, ]$model_lm[[1]])$r.squared
-AIC(by_city_lm_nest[1, ]$model_lm[[1]])
-by_city_lm_nest[1, ]$pred
-by_city_lm_nest[1, ]$data[[1]]$proportion
 
-by_city_lm_nest = by_city %>%
-  mutate(
-    model_lm = map(data, modlm),
-    pred = map(model_lm, predict),
-    cor = map(
-      model_lm,
-      function(x) summary(x$r.squared)
-    )
-  )
+names(summary(by_city_lm_nest$model_lm[[6]]))
+summary(by_city_lm_nest$model_lm[[6]])$r.squared #can't do this as vector of 6?
 
-by_city_lm_nest[1, ]$cor
 
+for(i in 1:nrow(by_city_lm_nest)){
+  by_city_lm_nest$rsq[i] = summary(by_city_lm_nest$model_lm[[i]])$r.square
+  by_city_lm_nest$adjrsq[i] = summary(by_city_lm_nest$model_lm[[i]])$adj.r.square
+  by_city_lm_nest$aic[i] = AIC(by_city_lm_nest$model_lm[[i]])
+}
+
+by_city_lm_fit = by_city_lm_nest %>%
+  select(region, mode, rsq, adjrsq, aic) %>%
+  arrange(mode)
+saveRDS(by_city_lm_fit, "by_city_lm_fit.Rds")
+
+# by_city_lm_nest[1, ]$pred
+# by_city_lm_nest[1, ]$data[[1]]$proportion
+# by_city_lm_nest[1, ]$cor
+
+
+# by_city_lm_nest = by_city %>%
+#   mutate(
+#     model_lm = map(data, modlm),
+#     pred = map(model_lm, predict),
+#     cor = map(
+#       model_lm,
+#       function(x) summary(x$r.squared)
+#     )
+#   )
+
+# plot
 by_city_lm = by_city_lm_nest %>%
   unnest(cols = c(data, pred)) %>%
   select(region, mode, all, distance, distance_euclidean, gradient, value, proportion, pred) %>%
@@ -107,8 +122,14 @@ modexp = function(d) {
   )
 }
 
-by_city_exp = by_city %>%
-  mutate(model_exp = map(data, modexp), pred = map(model_exp, predict)) %>%
+by_city_exp_nest = by_city %>%
+  mutate(model_exp = map(data, modexp), pred = map(model_exp, predict))
+
+names(summary(by_city_exp_nest$model_exp[[6]]))
+#which fit?
+
+
+by_city_exp = by_city_exp_nest %>%
   unnest(cols = c(data, pred)) %>%
   select(region, mode, all, distance, distance_euclidean, gradient, value, proportion, pred) %>%
   ungroup()

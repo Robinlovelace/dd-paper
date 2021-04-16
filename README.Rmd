@@ -1,6 +1,6 @@
 ---
-output: bookdown::word_document2
-# output: bookdown::pdf_document2
+# output: bookdown::word_document2
+output: bookdown::pdf_document2
 # output: bookdown::github_document2
 title: "Distance decay functions for modelling active travel uptake"
 bibliography: references.bib
@@ -25,6 +25,7 @@ library(tidyverse)
 by_city_lm = readRDS("by_city_lm.Rds")
 by_city_exp = readRDS("by_city_exp.Rds")
 by_city_beta = readRDS("by_city_beta.Rds")
+by_city_lm_fit = readRDS("by_city_lm_fit.Rds")
 ```
 
 <!-- paper highlights -->
@@ -247,6 +248,11 @@ ggplot(by_city_lm) +
   ylim(c(0, 1)) +
   xlim(c(0, 10))
 ```
+
+```{r linear fit}
+knitr::kable(by_city_lm_fit, digits = 2)
+```
+
 
 ## Exponential functions
 
